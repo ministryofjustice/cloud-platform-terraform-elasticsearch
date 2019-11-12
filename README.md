@@ -23,6 +23,7 @@ module "example_team_es" {
   team_name              = "example-repo"
   elasticsearch-domain   = "example-es"
   namespace              = "my-namespace"
+  elasticsearch_version  = "7.1"
 }
 ```
 
@@ -34,6 +35,8 @@ module "example_team_es" {
 | cluster_state_bucket | The name of the S3 bucket holding the terraform state for the cluster | string | | yes |
 | elasticsearch-domain | The domain name of the Elasticsearch cluster to create. This will be appended with the namespace name and will look like `<team_name>-<environment-name>-<elasticsearch-domain>`  | string | | yes |
 | namespace | Namespace which will access the Elasticsearch cluster | string | | yes |
+| elasticsearch_version | Version of Elasticsearch to deploy  | string | `7.1` | no |
+
 ### Tags
 
 Some of the inputs are tags. All infrastructure resources need to be tagged according to the [MOJ techincal guidence](https://ministryofjustice.github.io/technical-guidance/standards/documenting-infrastructure-owners/#documenting-owners-of-infrastructure). The tags are stored as variables that you will need to fill out as part of your module.
