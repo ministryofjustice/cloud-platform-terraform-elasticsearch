@@ -120,7 +120,7 @@ resource "null_resource" "es_ns_annotation" {
 
 resource "aws_elasticsearch_domain" "default" {
   count                 = "${var.enabled == "true" ? 1 : 0}"
-  domain_name           = "${var.namespace}-${var.elasticsearch-domain}"
+  domain_name           = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
   elasticsearch_version = "${var.elasticsearch_version}"
   advanced_options      = "${var.advanced_options}"
 
@@ -207,9 +207,10 @@ resource "aws_elasticsearch_domain_policy" "default" {
 }
 
 resource "kubernetes_deployment" "aws-es-proxy" {
-  count            = "${var.enabled == "true" && var.create_aws_es_proxy == "true" ? 1 : 0}"
+  count = "${var.enabled == "true" && var.create_aws_es_proxy == "true" ? 1 : 0}"
+
   metadata {
-    name = "aws-es-proxy"
+    name      = "aws-es-proxy"
     namespace = "${var.namespace}"
 
     labels = {
@@ -241,24 +242,25 @@ resource "kubernetes_deployment" "aws-es-proxy" {
         container {
           image = "ministryofjustice/cloud-platform-tools:aws-es-proxy"
           name  = "aws-es-proxy"
+
           port {
             container_port = 9200
           }
-          args = ["-endpoint","${format("https://%s", aws_elasticsearch_domain.default.0.endpoint)}","-listen",":9200"]
+
+          args = ["-endpoint", "${format("https://%s", aws_elasticsearch_domain.default.0.endpoint)}", "-listen", ":9200"]
         }
       }
     }
   }
 }
- 
+
 resource "kubernetes_service" "aws-es-proxy-service" {
-  count            = "${var.enabled == "true" && var.create_aws_es_proxy == "true" ? 1 : 0}"
+  count = "${var.enabled == "true" && var.create_aws_es_proxy == "true" ? 1 : 0}"
+
   metadata {
-    name = "aws-es-proxy-service"
+    name      = "aws-es-proxy-service"
     namespace = "${var.namespace}"
   }
-  
-  
 
   spec {
     selector = {

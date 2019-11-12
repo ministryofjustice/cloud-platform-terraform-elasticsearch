@@ -11,11 +11,21 @@ variable "cluster_state_bucket" {
   description = "The name of the S3 bucket holding the terraform state for the cluster"
 }
 
-variable "team_name" {}
+variable "team_name" {
+  description = "The name of your development team"
+}
 
-variable "application" {}
-variable "elasticsearch-domain" {}
-variable "environment-name" {}
+variable "environment-name" {
+  description = "The type of environment you're deploying to."
+}
+
+variable "application" {
+  description = "The name of the application which uses this module."
+}
+
+variable "elasticsearch-domain" {
+  description = "The name of the domain you want to use. The actual domain name will use the format <team_name>-<environment-name>-<elasticsearch-domain>"
+}
 
 variable "is-production" {
   default = "false"
@@ -54,7 +64,7 @@ variable "enabled" {
 
 variable "elasticsearch_version" {
   type        = "string"
-  default     = "6.5"
+  default     = "7.1"
   description = "Version of Elasticsearch to deploy"
 }
 

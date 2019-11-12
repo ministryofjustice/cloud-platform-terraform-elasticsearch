@@ -15,7 +15,7 @@ variable "cluster_state_bucket" {}
  *
  */
 module "example_team_es" {
-  source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=1.0"
+  source                 = "../"
   cluster_name           = "${var.cluster_name}"
   cluster_state_bucket   = "${var.cluster_state_bucket}"
   application            = "exampleapp"
@@ -23,15 +23,18 @@ module "example_team_es" {
   environment-name       = "dev"
   infrastructure-support = "cloud-platform@digital.justice.gov.uk"
   is-production          = "false"
-  team_name              = "example-repo"
+  team_name              = "example-team"
   elasticsearch-domain   = "example-es"
-  namespace              = "poornima-dev"
+  namespace              = "my-namespace"
+
+  # change the elasticsearch version as you see fit.
+  elasticsearch_version = "7.1"
 }
 
 resource "kubernetes_secret" "example_team_es" {
   metadata {
     name      = "example-team-es-cluster-output"
-    namespace = "poornima-dev"
+    namespace = "my-namespace"
   }
 
   data {
