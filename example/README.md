@@ -1,4 +1,4 @@
-# Example AWS RDS Instance configuration
+# Example AWS Elasticsearch configuration
 
 The configuration in this directory creates an example AWS Elasticsearch cluster.
 
