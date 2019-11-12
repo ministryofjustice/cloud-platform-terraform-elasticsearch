@@ -30,6 +30,10 @@ variable "infrastructure-support" {
   description = "The team responsible for managing the infrastructure. Should be of the form <team-name> (<team-email>)"
 }
 
+variable "namespace" {
+  description = "Namespace from which the module is requested"
+}
+
 variable "iam_role_arns" {
   type        = "list"
   default     = []
@@ -172,4 +176,10 @@ variable "node_to_node_encryption_enabled" {
   type        = "string"
   default     = "false"
   description = "Whether to enable node-to-node encryption"
+}
+
+variable "create_aws_es_proxy" {
+  type        = "string"
+  default     = "true"
+  description = "Whether to create HTTP Proxy for accessing Elasticsearch and Kibana outside of the cluster"
 }

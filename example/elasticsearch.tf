@@ -15,15 +15,15 @@ variable "cluster_state_bucket" {}
  *
  */
 module "example_team_es" {
-  source                 = "../"
+  source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=1.0"
   cluster_name           = "${var.cluster_name}"
   cluster_state_bucket   = "${var.cluster_state_bucket}"
-  team_name              = "example-repo"
-  business-unit          = "example-bu"
   application            = "exampleapp"
-  is-production          = "false"
+  business-unit          = "example-bu"
   environment-name       = "dev"
-  infrastructure-support = "cloud-platform"
+  infrastructure-support = "cloud-platform@digital.justice.gov.uk"
+  is-production          = "false"
+  team_name              = "example-repo"
   elasticsearch-domain   = "example-es"
   namespace              = "poornima-dev"
 }
@@ -36,7 +36,6 @@ resource "kubernetes_secret" "example_team_es" {
 
   data {
     es_domain_arn   = "${module.example_team_es.domain_arn}"
-    domain_id       = "${module.example_team_es.domain_id}"
     domain_endpoint = "${module.example_team_es.domain_endpoint}"
     kibana_endpoint = "${module.example_team_es.kibana_endpoint}"
     iam_role_name   = "${module.example_team_es.iam_role_name}"

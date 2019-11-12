@@ -16,7 +16,7 @@ resource "random_id" "id" {
 }
 
 locals {
-  identifier = "cp-${random_id.id.hex}"
+  identifier = "cloud-platform-${random_id.id.hex}"
 }
 
 resource "aws_db_subnet_group" "default" {
@@ -65,7 +65,7 @@ resource "aws_iam_service_linked_role" "default" {
 resource "aws_iam_role" "elasticsearch_role" {
   count              = "${var.enabled == "true" ? 1 : 0}"
   name               = "${local.identifier}"
-  description        = "IAM Role to assume to access the Elasticsearch ${local.identifier} cluster"
+  description        = "IAM Role to assume to access the Elasticsearch -${var.elasticsearch-domain} cluster"
   assume_role_policy = "${join("", data.aws_iam_policy_document.assume_role.*.json)}"
 
   tags {
@@ -88,27 +88,39 @@ data "aws_iam_policy_document" "assume_role" {
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/nodes.${data.terraform_remote_state.cluster.cluster_domain_name}"]
     }
 
     effect = "Allow"
   }
 }
 
-# resource "aws_iam_role_policy" "elasticsearch_role_policy" {
-#   role = "${aws_iam_role.elasticsearch_role.id}"
-#   statement {
-#     actions = ["es:ESHttp*"]
+data "aws_iam_policy_document" "elasticsearch_role_policy" {
+  statement {
+    actions = [
+      "sts:AssumeRole",
+      "es:ESHttp*",
+    ]
 
-#     resources = [
-#       "${aws_elasticsearch_domain.default.arn}/*",
-#       ]
-#   }
-# }
+    resources = ["${aws_elasticsearch_domain.default.arn}/*"]
+  }
+}
+
+resource "aws_iam_role_policy" "elasticsearch_role_policy" {
+  name   = "${local.identifier}"
+  role   = "${aws_iam_role.elasticsearch_role.id}"
+  policy = "${data.aws_iam_policy_document.elasticsearch_role_policy.json}"
+}
+
+resource "null_resource" "es_ns_annotation" {
+  provisioner "local-exec" {
+    command = "kubectl annotate namespace ${var.namespace} 'iam.amazonaws.com/permitted=${local.identifier}' --overwrite"
+  }
+}
 
 resource "aws_elasticsearch_domain" "default" {
   count                 = "${var.enabled == "true" ? 1 : 0}"
-  domain_name           = "cloud-platform-${var.elasticsearch-domain}"
+  domain_name           = "${var.namespace}-${var.elasticsearch-domain}"
   elasticsearch_version = "${var.elasticsearch_version}"
   advanced_options      = "${var.advanced_options}"
 
@@ -190,6 +202,72 @@ data "aws_iam_policy_document" "default" {
 
 resource "aws_elasticsearch_domain_policy" "default" {
   count           = "${var.enabled == "true" ? 1 : 0}"
-  domain_name     = "es-${var.application}"
+  domain_name     = "${var.namespace}-${var.elasticsearch-domain}"
   access_policies = "${join("", data.aws_iam_policy_document.default.*.json)}"
+}
+
+resource "kubernetes_deployment" "aws-es-proxy" {
+  count            = "${var.enabled == "true" && var.create_aws_es_proxy == "true" ? 1 : 0}"
+  metadata {
+    name = "aws-es-proxy"
+    namespace = "${var.namespace}"
+
+    labels = {
+      app = "aws-es-proxy"
+    }
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        app = "aws-es-proxy"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "aws-es-proxy"
+        }
+
+        annotations = {
+          "iam.amazonaws.com/role" = "${local.identifier}"
+        }
+      }
+
+      spec {
+        container {
+          image = "ministryofjustice/cloud-platform-tools:aws-es-proxy"
+          name  = "aws-es-proxy"
+          port {
+            container_port = 9200
+          }
+          args = ["-endpoint","${format("https://%s", aws_elasticsearch_domain.default.0.endpoint)}","-listen",":9200"]
+        }
+      }
+    }
+  }
+}
+ 
+resource "kubernetes_service" "aws-es-proxy-service" {
+  count            = "${var.enabled == "true" && var.create_aws_es_proxy == "true" ? 1 : 0}"
+  metadata {
+    name = "aws-es-proxy-service"
+    namespace = "${var.namespace}"
+  }
+  
+  
+
+  spec {
+    selector = {
+      app = "aws-es-proxy"
+    }
+
+    port {
+      port        = 9200
+      target_port = 9200
+    }
+  }
 }
