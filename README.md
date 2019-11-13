@@ -53,38 +53,25 @@ Some of the inputs are tags. All infrastructure resources need to be tagged acco
 
 ## Outputs
 
-The outputs are stored as `kubernetes_secrets` resource in the namespace you specified.
-
-| Name | Description |
-|------|-------------|
-| es_domain_arn | Arn for the AWS Elasticsearch domain |
-| domain_endpoint | Domain-specific endpoint used to submit index, search, and data upload requests |
-| kibana_endpoint | Domain-specific endpoint for Kibana without https scheme |
-| iam_role_name | IAM role to access AWS Elasticsearch cluster from application |
-| iam_role_arn | Arn of IAM role to use it as AssumeRole to access AWS Elasticsearch cluster from application |
+When you create an AWS Elasticsearch cluster using this module, it will deploy a HTTP Proxy `aws-es-proxy` using the [aws-es-proxy repo](https://github.com/abutaha/aws-es-proxy) and a Service `aws-es-proxy-service`  You can use this service `aws-es-proxy-service` to access the elasticsearch from your application.
 
 ## Accessing the Elasticsearch 
 
-Examples of how to do signing HTTP requests to Elasticsearch from your application can be found in [AWS developer guide](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-request-signing.html). Use the `iam_role_arn` (and then base64 decode) which you get from your kubernetes secret and you can AssumeRole to get credentials for Signing request from your application. 
-You need to add the annotation `iam.amazonaws.com/role: <iam_role_name>` to the Pod which runs the application.
+You can access the Elasticsearch from your application by doing `http://aws-es-proxy-service` and access kibana by doing `http://aws-es-proxy-service/_plugin/kibana/app/kibana`
 
-When you create an AWS Elasticsearch cluster using this module, it will deploy a HTTP Proxy `aws-es-proxy` using the [aws-es-proxy repo](https://github.com/abutaha/aws-es-proxy) and a Service `aws-es-proxy-service` to access the proxy from outside. You can exec into the Pod and use curl to access the Elasticsearch using the domain_endpoint.
-
-### Access from outside the cluster
+### Accessing from your local machine
 
 When you create an Elasticsearch using this module, it is created inside a
 virtual private cloud (VPC), which will only accept network connections from
 within the kubernetes cluster.  So, trying to connect to the Elasticsearch from
-your local machine will not work.
+your local machine will not work. 
 
 ```
 +--------------+                   \ /                        +--------------+
 | Your machine | -------------------X-----------------------> | Elasticsearch |
 +--------------+                   / \                        +--------------+
 ```
-
-If you need to access your elasticsearch from outside the cluster (e.g. from your
-own development machine), you can use the `aws-es-proxy-service` and setup a port-forward on your namespace to forward traffic from a port on your local machine.
+You can use the service `aws-es-proxy-service` and setup a port-forward on your namespace to forward traffic from a port on your local machine.
 
 ```
 kubectl \
@@ -102,4 +89,4 @@ So, the connection from your machine to the Elasticsearch works like this:
 | Your machine |------------>| Proxy - Port forward  |--------->| Elasticsearch |
 +--------------+             +---------------------+          +--------------+
 ```
-You can access the Elasticsearch from your local machine by doing `http://localhost:9200`
+You can access the Elasticsearch from your local machine by doing `http://localhost:9200` and access kibana by doing `http://localhost:9200/_plugin/kibana/app/kibana`

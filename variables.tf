@@ -170,11 +170,6 @@ variable "advanced_options" {
   description = "Key-value string pairs to specify advanced configuration options"
 }
 
-variable "kibana_subdomain_name" {
-  type        = "string"
-  default     = "kibana"
-  description = "The name of the subdomain for Kibana in the DNS zone (_e.g._ `kibana`, `ui`, `ui-es`, `search-ui`, `kibana.elasticsearch`)"
-}
 
 variable "create_iam_service_linked_role" {
   type        = "string"
@@ -188,8 +183,3 @@ variable "node_to_node_encryption_enabled" {
   description = "Whether to enable node-to-node encryption"
 }
 
-variable "create_aws_es_proxy" {
-  type        = "string"
-  default     = "true"
-  description = "Whether to create HTTP Proxy for accessing Elasticsearch and Kibana outside of the cluster"
-}

@@ -30,18 +30,3 @@ module "example_team_es" {
   # change the elasticsearch version as you see fit.
   elasticsearch_version = "7.1"
 }
-
-resource "kubernetes_secret" "example_team_es" {
-  metadata {
-    name      = "example-team-es-cluster-output"
-    namespace = "my-namespace"
-  }
-
-  data {
-    es_domain_arn   = "${module.example_team_es.domain_arn}"
-    domain_endpoint = "${module.example_team_es.domain_endpoint}"
-    kibana_endpoint = "${module.example_team_es.kibana_endpoint}"
-    iam_role_name   = "${module.example_team_es.iam_role_name}"
-    iam_role_arn    = "${module.example_team_es.iam_role_arn}"
-  }
-}

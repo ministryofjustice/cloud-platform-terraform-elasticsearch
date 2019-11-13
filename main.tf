@@ -19,7 +19,7 @@ locals {
   identifier = "cloud-platform-${random_id.id.hex}"
 }
 
-resource "aws_db_subnet_group" "default" {
+resource "aws_db_subnet_group" "db_subnet" {
   name       = "${local.identifier}"
   subnet_ids = ["${data.terraform_remote_state.cluster.internal_subnets_ids}"]
 
@@ -33,7 +33,7 @@ resource "aws_db_subnet_group" "default" {
   }
 }
 
-resource "aws_security_group" "default" {
+resource "aws_security_group" "security_group" {
   count       = "${var.enabled == "true" ? 1 : 0}"
   name        = "${local.identifier}"
   description = "Allow all inbound traffic"
@@ -55,11 +55,7 @@ resource "aws_security_group" "default" {
 }
 
 # https://github.com/terraform-providers/terraform-provider-aws/issues/5218
-resource "aws_iam_service_linked_role" "default" {
-  count            = "${var.enabled == "true" && var.create_iam_service_linked_role == "true" ? 1 : 0}"
-  aws_service_name = "es.amazonaws.com"
-  description      = "AWSServiceRoleForAmazonElasticsearchService Service-Linked Role"
-}
+
 
 # Role that pods can assume for access to elasticsearch and kibana
 resource "aws_iam_role" "elasticsearch_role" {
@@ -102,7 +98,7 @@ data "aws_iam_policy_document" "elasticsearch_role_policy" {
       "es:ESHttp*",
     ]
 
-    resources = ["${aws_elasticsearch_domain.default.arn}/*"]
+    resources = ["${aws_elasticsearch_domain.elasticsearch_domain.arn}/*"]
   }
 }
 
@@ -118,7 +114,7 @@ resource "null_resource" "es_ns_annotation" {
   }
 }
 
-resource "aws_elasticsearch_domain" "default" {
+resource "aws_elasticsearch_domain" "elasticsearch_domain" {
   count                 = "${var.enabled == "true" ? 1 : 0}"
   domain_name           = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
   elasticsearch_version = "${var.elasticsearch_version}"
@@ -145,7 +141,7 @@ resource "aws_elasticsearch_domain" "default" {
   }
 
   vpc_options {
-    security_group_ids = ["${aws_security_group.default.id}"]
+    security_group_ids = ["${aws_security_group.security_group.id}"]
     subnet_ids         = ["${data.terraform_remote_state.cluster.internal_subnets_ids}"]
   }
 
@@ -179,11 +175,9 @@ resource "aws_elasticsearch_domain" "default" {
     owner                  = "${var.team_name}"
     infrastructure-support = "${var.infrastructure-support}"
   }
-
-  depends_on = ["aws_iam_service_linked_role.default"]
 }
 
-data "aws_iam_policy_document" "default" {
+data "aws_iam_policy_document" "iam_role_policy" {
   statement {
     actions = [
       "es:*",
@@ -195,19 +189,20 @@ data "aws_iam_policy_document" "default" {
     }
 
     resources = [
-      "${aws_elasticsearch_domain.default.arn}/*",
+      "${aws_elasticsearch_domain.elasticsearch_domain.arn}/*",
     ]
   }
 }
 
-resource "aws_elasticsearch_domain_policy" "default" {
+
+resource "aws_elasticsearch_domain_policy" "domain_policy" {
   count           = "${var.enabled == "true" ? 1 : 0}"
-  domain_name     = "${var.namespace}-${var.elasticsearch-domain}"
-  access_policies = "${join("", data.aws_iam_policy_document.default.*.json)}"
+  domain_name     = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
+  access_policies = "${join("", data.aws_iam_policy_document.iam_role_policy.*.json)}"
 }
 
 resource "kubernetes_deployment" "aws-es-proxy" {
-  count = "${var.enabled == "true" && var.create_aws_es_proxy == "true" ? 1 : 0}"
+  count           = "${var.enabled == "true" ? 1 : 0}"
 
   metadata {
     name      = "aws-es-proxy"
@@ -247,7 +242,7 @@ resource "kubernetes_deployment" "aws-es-proxy" {
             container_port = 9200
           }
 
-          args = ["-endpoint", "${format("https://%s", aws_elasticsearch_domain.default.0.endpoint)}", "-listen", ":9200"]
+          args = ["-endpoint", "${format("https://%s", aws_elasticsearch_domain.elasticsearch_domain.0.endpoint)}", "-listen", ":9200"]
         }
       }
     }
@@ -255,7 +250,7 @@ resource "kubernetes_deployment" "aws-es-proxy" {
 }
 
 resource "kubernetes_service" "aws-es-proxy-service" {
-  count = "${var.enabled == "true" && var.create_aws_es_proxy == "true" ? 1 : 0}"
+  count           = "${var.enabled == "true" ? 1 : 0}"
 
   metadata {
     name      = "aws-es-proxy-service"
