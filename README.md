@@ -1,6 +1,5 @@
 # cloud-platform-terraform-elasticsearch
 Terraform module to add a AWS Elasticsearch and Kibana resource in the Cloud Platform
-# cloud-platform-terraform-s3-bucket module
 
 [![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-terraform-elasticsearch/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-terraform-elasticsearch/releases)
 
