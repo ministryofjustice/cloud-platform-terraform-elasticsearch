@@ -57,7 +57,7 @@ When you create an AWS Elasticsearch cluster using this module, it will deploy a
 
 ## Accessing the Elasticsearch 
 
-You can access the Elasticsearch from your application by doing `http://aws-es-proxy-service` and access kibana by doing `http://aws-es-proxy-service/_plugin/kibana/app/kibana`
+You can access the Elasticsearch from your application by doing `http://aws-es-proxy-service:9200` and access kibana by doing `http://aws-es-proxy-service:9200/_plugin/kibana/app/kibana`
 
 ### Accessing from your local machine
 
