@@ -23,15 +23,7 @@ locals {
 }
 
 resource "aws_db_subnet_group" "db_subnet" {
-  name = local.identifier
-  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-  # force an interpolation expression to be interpreted as a list by wrapping it
-  # in an extra set of list brackets. That form was supported for compatibility in
-  # v0.11, but is no longer supported in Terraform v0.12.
-  #
-  # If the expression in the following list itself returns a list, remove the
-  # brackets to avoid interpretation as a list of lists. If the expression
-  # returns a single list item then leave it as-is and remove this TODO comment.
+  name       = local.identifier
   subnet_ids = data.terraform_remote_state.cluster.outputs.internal_subnets_ids
 
   tags = {
@@ -51,32 +43,16 @@ resource "aws_security_group" "security_group" {
   vpc_id      = data.terraform_remote_state.cluster.outputs.vpc_id
 
   ingress {
-    from_port = 0
-    to_port   = 0
-    protocol  = "-1"
-    # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-    # force an interpolation expression to be interpreted as a list by wrapping it
-    # in an extra set of list brackets. That form was supported for compatibility in
-    # v0.11, but is no longer supported in Terraform v0.12.
-    #
-    # If the expression in the following list itself returns a list, remove the
-    # brackets to avoid interpretation as a list of lists. If the expression
-    # returns a single list item then leave it as-is and remove this TODO comment.
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = data.terraform_remote_state.cluster.outputs.internal_subnets
   }
 
   egress {
-    from_port = 0
-    to_port   = 0
-    protocol  = "-1"
-    # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-    # force an interpolation expression to be interpreted as a list by wrapping it
-    # in an extra set of list brackets. That form was supported for compatibility in
-    # v0.11, but is no longer supported in Terraform v0.12.
-    #
-    # If the expression in the following list itself returns a list, remove the
-    # brackets to avoid interpretation as a list of lists. If the expression
-    # returns a single list item then leave it as-is and remove this TODO comment.
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = data.terraform_remote_state.cluster.outputs.internal_subnets
   }
 }
@@ -168,15 +144,7 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
 
   vpc_options {
     security_group_ids = [aws_security_group.security_group[0].id]
-    # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-    # force an interpolation expression to be interpreted as a list by wrapping it
-    # in an extra set of list brackets. That form was supported for compatibility in
-    # v0.11, but is no longer supported in Terraform v0.12.
-    #
-    # If the expression in the following list itself returns a list, remove the
-    # brackets to avoid interpretation as a list of lists. If the expression
-    # returns a single list item then leave it as-is and remove this TODO comment.
-    subnet_ids = data.terraform_remote_state.cluster.outputs.internal_subnets_ids
+    subnet_ids         = data.terraform_remote_state.cluster.outputs.internal_subnets_ids
   }
 
   snapshot_options {
