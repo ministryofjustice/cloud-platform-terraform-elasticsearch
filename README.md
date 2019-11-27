@@ -11,18 +11,18 @@ The resources created will have a randomised name of the format `cloud-platform-
 
 ```hcl
 module "example_team_es" {
-  source = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=1.0"
-  cluster_name           = "${var.cluster_name}"
-  cluster_state_bucket   = "${var.cluster_state_bucket}"
+  source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=3.0"
+  cluster_name           = var.cluster_name
+  cluster_state_bucket   = var.cluster_state_bucket
   application            = "exampleapp"
   business-unit          = "example-bu"
   environment-name       = "dev"
   infrastructure-support = "cloud-platform@digital.justice.gov.uk"
   is-production          = "false"
-  team_name              = "example-repo"
+  team_name              = "example-team"
   elasticsearch-domain   = "example-es"
   namespace              = "my-namespace"
-  elasticsearch_version  = "7.1"
+  elasticsearch_version = "7.1"
 }
 ```
 
