@@ -11,7 +11,7 @@ The resources created will have a randomised name of the format `cloud-platform-
 
 ```hcl
 module "example_team_es" {
-  source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=3.0"
+  source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=version"
   cluster_name           = var.cluster_name
   cluster_state_bucket   = var.cluster_state_bucket
   application            = "exampleapp"
