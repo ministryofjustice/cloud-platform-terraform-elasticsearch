@@ -4,9 +4,11 @@
  *
  */
 
-variable "cluster_name" {}
+variable "cluster_name" {
+}
 
-variable "cluster_state_bucket" {}
+variable "cluster_state_bucket" {
+}
 
 /*
  * Make sure that you use the latest version of the module by changing the
@@ -15,9 +17,9 @@ variable "cluster_state_bucket" {}
  *
  */
 module "example_team_es" {
-  source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=2.0"
-  cluster_name           = "${var.cluster_name}"
-  cluster_state_bucket   = "${var.cluster_state_bucket}"
+  source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=3.0"
+  cluster_name           = var.cluster_name
+  cluster_state_bucket   = var.cluster_state_bucket
   application            = "exampleapp"
   business-unit          = "example-bu"
   environment-name       = "dev"
@@ -30,3 +32,4 @@ module "example_team_es" {
   # change the elasticsearch version as you see fit.
   elasticsearch_version = "7.1"
 }
+
