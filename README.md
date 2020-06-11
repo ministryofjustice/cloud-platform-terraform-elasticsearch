@@ -35,6 +35,7 @@ module "example_team_es" {
 | elasticsearch-domain | The domain name of the Elasticsearch cluster to create. This will be appended with the namespace name and will look like `<team_name>-<environment-name>-<elasticsearch-domain>`  | string | | yes |
 | namespace | Namespace which will access the Elasticsearch cluster | string | | yes |
 | elasticsearch_version | Version of Elasticsearch to deploy  | string | `7.1` | no |
+| aws-es-proxy-replica-count | Number of es proxy replicas  | string | `1` | no |
 
 ### Tags
 
