@@ -215,7 +215,7 @@ resource "kubernetes_deployment" "aws-es-proxy" {
   }
 
   spec {
-    replicas = 1
+    replicas = var.aws-es-proxy-replica-count
 
     selector {
       match_labels = {

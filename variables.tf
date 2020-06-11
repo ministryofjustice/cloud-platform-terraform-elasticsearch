@@ -164,3 +164,8 @@ variable "node_to_node_encryption_enabled" {
   description = "Whether to enable node-to-node encryption"
 }
 
+variable "aws-es-proxy-replica-count" {
+  type        = number
+  default     = 1
+  description = "Number of replicas for the aws-es-proxy deployment"
+}
