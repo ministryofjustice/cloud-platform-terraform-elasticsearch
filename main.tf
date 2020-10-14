@@ -27,6 +27,7 @@ resource "aws_db_subnet_group" "db_subnet" {
   subnet_ids = data.terraform_remote_state.cluster.outputs.internal_subnets_ids
 
   tags = {
+    namespace              = var.namespace
     business-unit          = var.business-unit
     application            = var.application
     is-production          = var.is-production
@@ -67,6 +68,7 @@ resource "aws_iam_role" "elasticsearch_role" {
   assume_role_policy = join("", data.aws_iam_policy_document.assume_role.*.json)
 
   tags = {
+    namespace              = var.namespace
     business-unit          = var.business-unit
     application            = var.application
     is-production          = var.is-production
@@ -170,6 +172,7 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
   }
 
   tags = {
+    namespace              = var.namespace
     business-unit          = var.business-unit
     application            = var.application
     is-production          = var.is-production
