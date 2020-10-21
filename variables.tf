@@ -169,3 +169,9 @@ variable "aws-es-proxy-replica-count" {
   default     = 1
   description = "Number of replicas for the aws-es-proxy deployment"
 }
+
+variable "s3_manual_snapshot_repository" {
+  type        = string
+  default     = ""
+  description = "ARN of S3 bucket to use for manual snapshot repository"
+}

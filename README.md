@@ -36,6 +36,7 @@ module "example_team_es" {
 | namespace | Namespace which will access the Elasticsearch cluster | string | | yes |
 | elasticsearch_version | Version of Elasticsearch to deploy  | string | `7.1` | no |
 | aws-es-proxy-replica-count | Number of es proxy replicas  | string | `1` | no |
+| s3_manual_snapshot_repository | ARN of S3 bucket to use for manual snapshot repository  | string | | no |
 
 ### Tags
 
