@@ -22,21 +22,6 @@ locals {
   identifier = "cloud-platform-${random_id.id.hex}"
 }
 
-resource "aws_db_subnet_group" "db_subnet" {
-  name       = local.identifier
-  subnet_ids = data.terraform_remote_state.cluster.outputs.internal_subnets_ids
-
-  tags = {
-    namespace              = var.namespace
-    business-unit          = var.business-unit
-    application            = var.application
-    is-production          = var.is-production
-    environment-name       = var.environment-name
-    owner                  = var.team_name
-    infrastructure-support = var.infrastructure-support
-  }
-}
-
 resource "aws_security_group" "security_group" {
   count       = var.enabled == "true" ? 1 : 0
   name        = local.identifier
