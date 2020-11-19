@@ -22,21 +22,6 @@ locals {
   identifier = "cloud-platform-${random_id.id.hex}"
 }
 
-resource "aws_db_subnet_group" "db_subnet" {
-  name       = local.identifier
-  subnet_ids = data.terraform_remote_state.cluster.outputs.internal_subnets_ids
-
-  tags = {
-    namespace              = var.namespace
-    business-unit          = var.business-unit
-    application            = var.application
-    is-production          = var.is-production
-    environment-name       = var.environment-name
-    owner                  = var.team_name
-    infrastructure-support = var.infrastructure-support
-  }
-}
-
 resource "aws_security_group" "security_group" {
   count       = var.enabled == "true" ? 1 : 0
   name        = local.identifier
@@ -96,6 +81,8 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 data "aws_iam_policy_document" "elasticsearch_role_policy" {
+  source_json = var.s3_manual_snapshot_repository != "" ? data.aws_iam_policy_document.elasticsearch_role_snapshot_policy[0].json : data.aws_iam_policy_document.empty.json
+
   statement {
     actions = [
       "sts:AssumeRole",
@@ -106,10 +93,88 @@ data "aws_iam_policy_document" "elasticsearch_role_policy" {
   }
 }
 
+data "aws_iam_policy_document" "elasticsearch_role_snapshot_policy" {
+  count = var.enabled == "true" && var.s3_manual_snapshot_repository != "" ? 1 : 0
+  statement {
+    actions = [
+      "iam:PassRole"
+    ]
+
+    resources = ["${aws_iam_role.snapshot_role[0].arn}"]
+  }
+}
+
+data "aws_iam_policy_document" "empty" {
+}
+
 resource "aws_iam_role_policy" "elasticsearch_role_policy" {
   name   = local.identifier
   role   = aws_iam_role.elasticsearch_role[0].id
   policy = data.aws_iam_policy_document.elasticsearch_role_policy.json
+}
+
+
+# Role that ES can assume for creating/restoring from manual snapshots
+resource "aws_iam_role" "snapshot_role" {
+  count              = var.enabled == "true" && var.s3_manual_snapshot_repository != "" ? 1 : 0
+  name               = "${local.identifier}-snapshots"
+  description        = "IAM Role for Elasticsearch service to assume for creating and restoring manual snapshots with s3"
+  assume_role_policy = join("", data.aws_iam_policy_document.snapshot_role.*.json)
+
+  tags = {
+    business-unit          = var.business-unit
+    application            = var.application
+    is-production          = var.is-production
+    environment-name       = var.environment-name
+    owner                  = var.team_name
+    infrastructure-support = var.infrastructure-support
+  }
+}
+
+data "aws_iam_policy_document" "snapshot_role" {
+  count = var.enabled == "true" && var.s3_manual_snapshot_repository != "" ? 1 : 0
+
+  statement {
+    actions = [
+      "sts:AssumeRole",
+    ]
+
+    principals {
+      type        = "Service"
+      identifiers = ["es.amazonaws.com"]
+    }
+
+    effect = "Allow"
+  }
+}
+
+data "aws_iam_policy_document" "snapshot_role_policy" {
+  count = var.enabled == "true" && var.s3_manual_snapshot_repository != "" ? 1 : 0
+  statement {
+    actions = [
+      "s3:ListBucket"
+    ]
+
+    resources = ["${var.s3_manual_snapshot_repository}"]
+  }
+
+  statement {
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject"
+    ]
+
+    resources = ["${var.s3_manual_snapshot_repository}/*"]
+  }
+
+}
+
+resource "aws_iam_role_policy" "snapshot_role_policy" {
+  count  = var.enabled == "true" && var.s3_manual_snapshot_repository != "" ? 1 : 0
+  name   = "${local.identifier}-snapshots"
+  role   = aws_iam_role.snapshot_role[0].id
+  policy = data.aws_iam_policy_document.snapshot_role_policy[0].json
 }
 
 resource "null_resource" "es_ns_annotation" {
