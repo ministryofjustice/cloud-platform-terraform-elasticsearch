@@ -210,9 +210,14 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
   elasticsearch_version = var.elasticsearch_version
   advanced_options      = var.advanced_options
 
-  encrypt_at_rest_enabled    = var.encryption_at_rest
-  encrypt_at_rest_kms_key_id = aws_kms_key.kms[0].arn
-  node_to_node_encryption_enabled = var.node_to_node_encryption_enabled
+  encrypt_at_rest {
+    enabled = var.encryption_at_rest
+    kms_key_id = var.encryption_at_rest == "true" ? aws_kms_key.kms[0].arn : null
+  }
+
+  node_to_node_encryption {
+    enabled = var.node_to_node_encryption_enabled
+  }
 
   ebs_options {
     ebs_enabled = var.ebs_volume_size > 0 ? true : false
