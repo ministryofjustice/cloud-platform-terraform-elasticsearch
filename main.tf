@@ -184,7 +184,7 @@ resource "null_resource" "es_ns_annotation" {
 }
 
 resource "aws_kms_key" "kms" {
-  count       = var.encryption_at_rest == "true" ? 1 : 0
+  count       = var.encryption_at_rest ? 1 : 0
   description = local.identifier
 
   tags = {
@@ -199,7 +199,7 @@ resource "aws_kms_key" "kms" {
 }
 
 resource "aws_kms_alias" "alias" {
-  count       = var.encryption_at_rest == "true" ? 1 : 0
+  count         = var.encryption_at_rest ? 1 : 0
   name          = "alias/${local.identifier}"
   target_key_id = aws_kms_key.kms[0].key_id
 }
@@ -211,8 +211,8 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
   advanced_options      = var.advanced_options
 
   encrypt_at_rest {
-    enabled = var.encryption_at_rest
-    kms_key_id = var.encryption_at_rest == "true" ? aws_kms_key.kms[0].arn : null
+    enabled    = var.encryption_at_rest
+    kms_key_id = var.encryption_at_rest ? aws_kms_key.kms[0].arn : null
   }
 
   node_to_node_encryption {
