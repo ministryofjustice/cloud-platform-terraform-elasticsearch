@@ -37,6 +37,7 @@ module "example_team_es" {
 | elasticsearch_version | Version of Elasticsearch to deploy  | string | `7.1` | no |
 | aws-es-proxy-replica-count | Number of es proxy replicas  | string | `1` | no |
 | s3_manual_snapshot_repository | ARN of S3 bucket to use for manual snapshot repository  | string | | no |
+| encryption_at_rest | Whether to encrypt the domain at rest | string | false | no |
 
 ### Tags
 
@@ -56,7 +57,7 @@ Some of the inputs are tags. All infrastructure resources need to be tagged acco
 
 When you create an AWS Elasticsearch cluster using this module, it will deploy a HTTP Proxy `aws-es-proxy` using the [aws-es-proxy repo](https://github.com/abutaha/aws-es-proxy) and a Service `aws-es-proxy-service`  You can use this service `aws-es-proxy-service` to access the elasticsearch from your application.
 
-## Accessing the Elasticsearch 
+## Accessing the Elasticsearch
 
 You can access the Elasticsearch from your application by doing `http://aws-es-proxy-service:9200` and access kibana by doing `http://aws-es-proxy-service:9200/_plugin/kibana/app/kibana`
 
@@ -65,7 +66,7 @@ You can access the Elasticsearch from your application by doing `http://aws-es-p
 When you create an Elasticsearch using this module, it is created inside a
 virtual private cloud (VPC), which will only accept network connections from
 within the kubernetes cluster.  So, trying to connect to the Elasticsearch from
-your local machine will not work. 
+your local machine will not work.
 
 ```
 +--------------+                   \ /                        +--------------+

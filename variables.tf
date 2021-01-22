@@ -159,9 +159,15 @@ variable "advanced_options" {
 }
 
 variable "node_to_node_encryption_enabled" {
-  type        = string
-  default     = "false"
+  type        = bool
+  default     = false
   description = "Whether to enable node-to-node encryption"
+}
+
+variable "encryption_at_rest" {
+  type        = bool
+  default     = false
+  description = "Whether to encrypt the domain at rest"
 }
 
 variable "aws-es-proxy-replica-count" {

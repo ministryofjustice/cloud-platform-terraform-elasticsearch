@@ -183,11 +183,41 @@ resource "null_resource" "es_ns_annotation" {
   }
 }
 
+resource "aws_kms_key" "kms" {
+  count       = var.encryption_at_rest ? 1 : 0
+  description = local.identifier
+
+  tags = {
+    business-unit          = var.business-unit
+    application            = var.application
+    is-production          = var.is-production
+    environment-name       = var.environment-name
+    owner                  = var.team_name
+    infrastructure-support = var.infrastructure-support
+    namespace              = var.namespace
+  }
+}
+
+resource "aws_kms_alias" "alias" {
+  count         = var.encryption_at_rest ? 1 : 0
+  name          = "alias/${local.identifier}"
+  target_key_id = aws_kms_key.kms[0].key_id
+}
+
 resource "aws_elasticsearch_domain" "elasticsearch_domain" {
   count                 = var.enabled == "true" ? 1 : 0
   domain_name           = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
   elasticsearch_version = var.elasticsearch_version
   advanced_options      = var.advanced_options
+
+  encrypt_at_rest {
+    enabled    = var.encryption_at_rest
+    kms_key_id = var.encryption_at_rest ? aws_kms_key.kms[0].arn : null
+  }
+
+  node_to_node_encryption {
+    enabled = var.node_to_node_encryption_enabled
+  }
 
   ebs_options {
     ebs_enabled = var.ebs_volume_size > 0 ? true : false
