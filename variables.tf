@@ -170,6 +170,12 @@ variable "encryption_at_rest" {
   description = "Whether to encrypt the domain at rest"
 }
 
+variable "aws_es_proxy_service_name" {
+  type        = string
+  default     = "aws-es-proxy-service"
+  description = "Name used by aws-es-proxy service"
+}
+
 variable "aws-es-proxy-replica-count" {
   type        = number
   default     = 1

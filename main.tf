@@ -304,7 +304,7 @@ resource "kubernetes_deployment" "aws-es-proxy" {
   count = var.enabled == "true" ? 1 : 0
 
   metadata {
-    name      = "aws-es-proxy"
+    name      = "aws-es-proxy-${local.identifier}"
     namespace = var.namespace
 
     labels = {
@@ -317,14 +317,14 @@ resource "kubernetes_deployment" "aws-es-proxy" {
 
     selector {
       match_labels = {
-        app = "aws-es-proxy"
+        app = "aws-es-proxy-${local.identifier}"
       }
     }
 
     template {
       metadata {
         labels = {
-          app = "aws-es-proxy"
+          app = "aws-es-proxy-${local.identifier}"
         }
 
         annotations = {
@@ -355,13 +355,13 @@ resource "kubernetes_service" "aws-es-proxy-service" {
   count = var.enabled == "true" ? 1 : 0
 
   metadata {
-    name      = "aws-es-proxy-service"
+    name      = var.aws_es_proxy_service_name
     namespace = var.namespace
   }
 
   spec {
     selector = {
-      app = "aws-es-proxy"
+      app = "aws-es-proxy-${local.identifier}"
     }
 
     port {
