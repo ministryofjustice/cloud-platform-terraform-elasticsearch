@@ -1,6 +1,6 @@
 output "aws_es_proxy_url" {
   description = "URL for aws-es-proxy service"
-  value       = "http://${kubernetes_service.aws-es-proxy-service.metadata.0.name}:${kubernetes_service.aws-es-proxy-service.port.0.port}"
+  value       = length(kubernetes_service.aws-es-proxy-service) > 0 ? "http://${kubernetes_service.aws-es-proxy-service.0.metadata.0.name}:${kubernetes_service.aws-es-proxy-service.0.spec.0.port.0.port}" : ""
 }
 
 output "snapshot_role_arn" {
