@@ -296,7 +296,7 @@ data "aws_iam_policy_document" "iam_role_policy" {
 
 resource "aws_elasticsearch_domain_policy" "domain_policy" {
   count           = var.enabled == "true" ? 1 : 0
-  domain_name     = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
+  domain_name     = var.elasticsearch_domain_name
   access_policies = join("", data.aws_iam_policy_document.iam_role_policy.*.json)
 }
 
