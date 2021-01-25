@@ -206,7 +206,7 @@ resource "aws_kms_alias" "alias" {
 
 resource "aws_elasticsearch_domain" "elasticsearch_domain" {
   count                 = var.enabled == "true" ? 1 : 0
-  domain_name           = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
+  domain_name           = var.elasticsearch_domain_name
   elasticsearch_version = var.elasticsearch_version
   advanced_options      = var.advanced_options
 
