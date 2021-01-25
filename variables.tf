@@ -50,12 +50,6 @@ variable "enabled" {
   description = "Set to false to prevent the module from creating any resources"
 }
 
-variable "elasticsearch_domain_name" {
-  type        = string
-  default     = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
-  description = "Name of elasticsearch domain"
-}
-
 variable "elasticsearch_version" {
   type        = string
   default     = "7.1"
