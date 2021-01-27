@@ -44,6 +44,12 @@ variable "namespace" {
   description = "Namespace from which the module is requested"
 }
 
+variable "es_ns_annotation" {
+  type        = bool
+  default     = true
+  description = "Whether to add namespace annotation for permitted KIAM role - disable this if running more than one instance of ES in a namespace and the annotation will need to fixed manually."
+}
+
 variable "enabled" {
   type        = string
   default     = "true"

@@ -178,11 +178,12 @@ resource "aws_iam_role_policy" "snapshot_role_policy" {
   policy = data.aws_iam_policy_document.snapshot_role_policy[0].json
 }
 
-#resource "null_resource" "es_ns_annotation" {
-#  provisioner "local-exec" {
-#    command = "kubectl annotate namespace ${var.namespace} 'iam.amazonaws.com/permitted=${local.identifier}' --overwrite"
-#  }
-#}
+resource "null_resource" "es_ns_annotation" {
+  count = var.es_ns_annotation ? 1 : 0
+  provisioner "local-exec" {
+    command = "kubectl annotate namespace ${var.namespace} 'iam.amazonaws.com/permitted=${local.identifier}' --overwrite"
+  }
+}
 
 resource "aws_kms_key" "kms" {
   count       = var.encryption_at_rest ? 1 : 0
