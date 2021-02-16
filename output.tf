@@ -7,3 +7,8 @@ output "snapshot_role_arn" {
   description = "Snapshot role ARN"
   value       = length(aws_iam_role.snapshot_role) > 0 ? aws_iam_role.snapshot_role[0].arn : null
 }
+
+output "aws_iam_role_name" {
+   description = "IAM role name to assume when accessing the Elasticsearch"
+  value       = length(aws_iam_role.elasticsearch_role) > 0 ? aws_iam_role.elasticsearch_role[0].name : null 
+}
