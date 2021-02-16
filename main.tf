@@ -19,7 +19,8 @@ resource "random_id" "id" {
 }
 
 locals {
-  identifier = "cloud-platform-${random_id.id.hex}"
+  identifier                = "cloud-platform-${random_id.id.hex}"
+  elasticsearch_domain_name = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
 }
 
 resource "aws_security_group" "security_group" {
@@ -177,7 +178,6 @@ resource "aws_iam_role_policy" "snapshot_role_policy" {
   policy = data.aws_iam_policy_document.snapshot_role_policy[0].json
 }
 
-
 resource "aws_kms_key" "kms" {
   count       = var.encryption_at_rest ? 1 : 0
   description = local.identifier
@@ -201,7 +201,7 @@ resource "aws_kms_alias" "alias" {
 
 resource "aws_elasticsearch_domain" "elasticsearch_domain" {
   count                 = var.enabled == "true" ? 1 : 0
-  domain_name           = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
+  domain_name           = local.elasticsearch_domain_name
   elasticsearch_version = var.elasticsearch_version
   advanced_options      = var.advanced_options
 
@@ -291,7 +291,7 @@ data "aws_iam_policy_document" "iam_role_policy" {
 
 resource "aws_elasticsearch_domain_policy" "domain_policy" {
   count           = var.enabled == "true" ? 1 : 0
-  domain_name     = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
+  domain_name     = local.elasticsearch_domain_name
   access_policies = join("", data.aws_iam_policy_document.iam_role_policy.*.json)
 }
 
@@ -299,7 +299,7 @@ resource "kubernetes_deployment" "aws-es-proxy" {
   count = var.enabled == "true" ? 1 : 0
 
   metadata {
-    name      = "aws-es-proxy"
+    name      = "aws-es-proxy-${local.identifier}"
     namespace = var.namespace
 
     labels = {
@@ -312,14 +312,14 @@ resource "kubernetes_deployment" "aws-es-proxy" {
 
     selector {
       match_labels = {
-        app = "aws-es-proxy"
+        app = "aws-es-proxy-${local.identifier}"
       }
     }
 
     template {
       metadata {
         labels = {
-          app = "aws-es-proxy"
+          app = "aws-es-proxy-${local.identifier}"
         }
 
         annotations = {
@@ -350,13 +350,13 @@ resource "kubernetes_service" "aws-es-proxy-service" {
   count = var.enabled == "true" ? 1 : 0
 
   metadata {
-    name      = "aws-es-proxy-service"
+    name      = var.aws_es_proxy_service_name
     namespace = var.namespace
   }
 
   spec {
     selector = {
-      app = "aws-es-proxy"
+      app = "aws-es-proxy-${local.identifier}"
     }
 
     port {

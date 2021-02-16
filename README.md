@@ -35,6 +35,7 @@ module "example_team_es" {
 | elasticsearch-domain | The domain name of the Elasticsearch cluster to create. This will be appended with the namespace name and will look like `<team_name>-<environment-name>-<elasticsearch-domain>`  | string | | yes |
 | namespace | Namespace which will access the Elasticsearch cluster | string | | yes |
 | elasticsearch_version | Version of Elasticsearch to deploy  | string | `7.1` | no |
+| aws_es_proxy_service_name | Name to be used by aws-es-proxy service  | string | "aws-es-proxy-service" | no |
 | aws-es-proxy-replica-count | Number of es proxy replicas  | string | `1` | no |
 | s3_manual_snapshot_repository | ARN of S3 bucket to use for manual snapshot repository  | string | | no |
 | encryption_at_rest | Whether to encrypt the domain at rest | string | false | no |
