@@ -3,29 +3,13 @@ Terraform module to add a AWS Elasticsearch and Kibana resource in the Cloud Pla
 
 [![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-terraform-elasticsearch/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-terraform-elasticsearch/releases)
 
-Terraform module that will create an AWS Elasticsearch cluster within a VPC and a relevant IAM role that will have access to the Elasticsearch.
+Terraform module that will create an AWS Elasticsearch cluster within a VPC and a relevant IAM role that will provide access to the Elasticsearch.
 
 The resources created will have a randomised name of the format `cloud-platform-7a5c4a2a7e2134a`. This ensures that the resources created is globally unique.
 
 ## Usage
 
-```hcl
-module "example_team_es" {
-  source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=version"
-  cluster_name           = var.cluster_name
-  cluster_state_bucket   = var.cluster_state_bucket
-  application            = "exampleapp"
-  business-unit          = "example-bu"
-  environment-name       = "dev"
-  infrastructure-support = "cloud-platform@digital.justice.gov.uk"
-  is-production          = "false"
-  team_name              = "example-team"
-  elasticsearch-domain   = "example-es"
-  namespace              = "my-namespace"
-  elasticsearch_version = "7.1"
-}
-```
-
+See [the example README](https://github.com/ministryofjustice/cloud-platform-terraform-elasticsearch/blob/main/example/README.md)
 ## Inputs
 
 | Name | Description | Type | Default | Required |
