@@ -3,29 +3,13 @@ Terraform module to add a AWS Elasticsearch and Kibana resource in the Cloud Pla
 
 [![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-terraform-elasticsearch/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-terraform-elasticsearch/releases)
 
-Terraform module that will create an AWS Elasticsearch cluster within a VPC and a relevant IAM role that will have access to the Elasticsearch.
+Terraform module that will create an AWS Elasticsearch cluster within a VPC and a relevant IAM role that will provide access to the Elasticsearch.
 
 The resources created will have a randomised name of the format `cloud-platform-7a5c4a2a7e2134a`. This ensures that the resources created is globally unique.
 
 ## Usage
 
-```hcl
-module "example_team_es" {
-  source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=version"
-  cluster_name           = var.cluster_name
-  cluster_state_bucket   = var.cluster_state_bucket
-  application            = "exampleapp"
-  business-unit          = "example-bu"
-  environment-name       = "dev"
-  infrastructure-support = "cloud-platform@digital.justice.gov.uk"
-  is-production          = "false"
-  team_name              = "example-team"
-  elasticsearch-domain   = "example-es"
-  namespace              = "my-namespace"
-  elasticsearch_version = "7.1"
-}
-```
-
+See [the example README](https://github.com/ministryofjustice/cloud-platform-terraform-elasticsearch/blob/main/example/README.md)
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -35,6 +19,7 @@ module "example_team_es" {
 | elasticsearch-domain | The domain name of the Elasticsearch cluster to create. This will be appended with the namespace name and will look like `<team_name>-<environment-name>-<elasticsearch-domain>`  | string | | yes |
 | namespace | Namespace which will access the Elasticsearch cluster | string | | yes |
 | elasticsearch_version | Version of Elasticsearch to deploy  | string | `7.1` | no |
+| aws_es_proxy_service_name | Name to be used by aws-es-proxy service  | string | "aws-es-proxy-service" | no |
 | aws-es-proxy-replica-count | Number of es proxy replicas  | string | `1` | no |
 | s3_manual_snapshot_repository | ARN of S3 bucket to use for manual snapshot repository  | string | | no |
 | encryption_at_rest | Whether to encrypt the domain at rest | string | false | no |
