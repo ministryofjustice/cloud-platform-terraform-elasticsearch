@@ -101,7 +101,7 @@ data "aws_iam_policy_document" "elasticsearch_role_snapshot_policy" {
       "iam:PassRole"
     ]
 
-    resources = ["${aws_iam_role.snapshot_role[0].arn}"]
+    resources = [aws_iam_role.snapshot_role[0].arn]
   }
 }
 
@@ -156,7 +156,7 @@ data "aws_iam_policy_document" "snapshot_role_policy" {
       "s3:ListBucket"
     ]
 
-    resources = ["${var.s3_manual_snapshot_repository}"]
+    resources = [var.s3_manual_snapshot_repository]
   }
 
   statement {
