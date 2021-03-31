@@ -10,7 +10,6 @@ data "aws_vpc" "selected" {
 
 data "aws_route53_zone" "selected" {
   name         = "${var.cluster_name}.cloud-platform.service.justice.gov.uk"
-  private_zone = true
 }
 
 data "aws_subnet_ids" "private" {
