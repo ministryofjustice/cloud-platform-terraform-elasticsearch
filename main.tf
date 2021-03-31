@@ -8,6 +8,11 @@ data "aws_vpc" "selected" {
   }
 }
 
+data "aws_route53_zone" "selected" {
+  name         = "${var.cluster_name}.cloud-platform.service.justice.gov.uk."
+  private_zone = true
+}
+
 data "aws_subnet_ids" "private" {
   vpc_id = data.aws_vpc.selected.id
 
@@ -81,7 +86,7 @@ data "aws_iam_policy_document" "assume_role" {
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/nodes.${data.terraform_remote_state.cluster.outputs.cluster_domain_name}"]
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/nodes.${data.aws_route53_zone.selected.name}"]
     }
 
     effect = "Allow"
