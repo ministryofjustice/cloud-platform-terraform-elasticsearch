@@ -15,7 +15,6 @@ See [the example README](https://github.com/ministryofjustice/cloud-platform-ter
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | cluster_name | The name of the kubernetes cluster (eg.: live-1) | string |  | yes |
-| cluster_state_bucket | The name of the S3 bucket holding the terraform state for the cluster | string | | yes |
 | elasticsearch-domain | The domain name of the Elasticsearch cluster to create. This will be appended with the namespace name and will look like `<team_name>-<environment-name>-<elasticsearch-domain>`  | string | | yes |
 | namespace | Namespace which will access the Elasticsearch cluster | string | | yes |
 | elasticsearch_version | Version of Elasticsearch to deploy  | string | `7.1` | no |

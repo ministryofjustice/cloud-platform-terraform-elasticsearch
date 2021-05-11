@@ -18,7 +18,6 @@ Creating an elasticsearch cluster and accessing it is a 2 step process
 module "example_team_es" {
   source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=version"
   cluster_name           = var.cluster_name
-  cluster_state_bucket   = var.cluster_state_bucket
   application            = "exampleapp"
   business-unit          = "example-bu"
   environment-name       = "dev"

@@ -1,17 +1,28 @@
-data "aws_caller_identity" "current" {
-}
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
 
-data "aws_region" "current" {
-}
-
-data "terraform_remote_state" "cluster" {
-  backend = "s3"
-
-  config = {
-    bucket = var.cluster_state_bucket
-    region = "eu-west-1"
-    key    = "cloud-platform/${var.cluster_name}/terraform.tfstate"
+data "aws_vpc" "selected" {
+  filter {
+    name   = "tag:Name"
+    values = [var.cluster_name]
   }
+}
+
+data "aws_route53_zone" "selected" {
+  name         = "${var.cluster_name}.cloud-platform.service.justice.gov.uk"
+}
+
+data "aws_subnet_ids" "private" {
+  vpc_id = data.aws_vpc.selected.id
+
+  tags = {
+    SubnetType = "Private"
+  }
+}
+
+data "aws_subnet" "private" {
+  for_each = data.aws_subnet_ids.private.ids
+  id       = each.value
 }
 
 resource "random_id" "id" {
@@ -27,20 +38,20 @@ resource "aws_security_group" "security_group" {
   count       = var.enabled == "true" ? 1 : 0
   name        = local.identifier
   description = "Allow all inbound traffic"
-  vpc_id      = data.terraform_remote_state.cluster.outputs.vpc_id
+  vpc_id      = data.aws_vpc.selected.id
 
   ingress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = data.terraform_remote_state.cluster.outputs.internal_subnets
+    cidr_blocks = [for s in data.aws_subnet.private : s.cidr_block]
   }
 
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = data.terraform_remote_state.cluster.outputs.internal_subnets
+    cidr_blocks = [for s in data.aws_subnet.private : s.cidr_block]
   }
 }
 
@@ -74,7 +85,7 @@ data "aws_iam_policy_document" "assume_role" {
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/nodes.${data.terraform_remote_state.cluster.outputs.cluster_domain_name}"]
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/nodes.${data.aws_route53_zone.selected.name}"]
     }
 
     effect = "Allow"
@@ -236,7 +247,7 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
 
   vpc_options {
     security_group_ids = [aws_security_group.security_group[0].id]
-    subnet_ids         = data.terraform_remote_state.cluster.outputs.internal_subnets_ids
+    subnet_ids         = data.aws_subnet_ids.private.ids
   }
 
   snapshot_options {
