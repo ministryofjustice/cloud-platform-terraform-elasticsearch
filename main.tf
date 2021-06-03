@@ -46,7 +46,7 @@ locals {
   elasticsearch_domain_name    = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
   aws_es_irsa_sa_name          = var.irsa_enabled ? var.aws_es_irsa_sa_name : null
   assume_role_name             = var.assume_enabled ? local.identifier : null
-  eks_cluster_oidc_issuer_url  = data.terraform_remote_state.cluster[0].outputs.cluster_oidc_issuer_url
+  eks_cluster_oidc_issuer_url  = var.irsa_enabled ? data.terraform_remote_state.cluster[0].outputs.cluster_oidc_issuer_url : null
   es_domain_policy_identifiers = var.assume_enabled ? aws_iam_role.elasticsearch_role[0].arn : module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn
 }
 
