@@ -8,6 +8,18 @@ data "aws_vpc" "selected" {
   }
 }
 
+# This needs to be replaced, once this issue(https://github.com/hashicorp/terraform-provider-aws/issues/13719) is fixed.
+data "terraform_remote_state" "cluster" {
+  count   = var.irsa_enabled == "true" ? 1 : 0
+  backend = "s3"
+
+  config = {
+    bucket = "cloud-platform-terraform-state"
+    region = "eu-west-1"
+    key    = "aws-accounts/cloud-platform-aws/vpc/eks/${var.cluster_name}/terraform.tfstate"
+  }
+}
+
 data "aws_route53_zone" "selected" {
   name = "${var.cluster_name}.cloud-platform.service.justice.gov.uk"
 }
@@ -30,10 +42,12 @@ resource "random_id" "id" {
 }
 
 locals {
-  identifier                = "cloud-platform-${random_id.id.hex}"
-  elasticsearch_domain_name = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
-  aws_es_irsa_sa_name       = var.irsa_enabled ? var.aws_es_irsa_sa_name : null
-  assume_role_name          = var.assume_enabled ? local.identifier : null
+  identifier                   = "cloud-platform-${random_id.id.hex}"
+  elasticsearch_domain_name    = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
+  aws_es_irsa_sa_name          = var.irsa_enabled ? var.aws_es_irsa_sa_name : null
+  assume_role_name             = var.assume_enabled ? local.identifier : null
+  eks_cluster_oidc_issuer_url  = data.terraform_remote_state.cluster[0].outputs.cluster_oidc_issuer_url
+  es_domain_policy_identifiers = var.assume_enabled ? aws_iam_role.elasticsearch_role[0].arn : module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn
 }
 
 resource "aws_security_group" "security_group" {
@@ -234,7 +248,7 @@ data "aws_iam_policy_document" "iam_role_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = ["*"]
+      identifiers = [local.es_domain_policy_identifiers]
     }
 
     resources = [

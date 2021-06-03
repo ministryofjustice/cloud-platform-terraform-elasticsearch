@@ -42,7 +42,7 @@ variable "namespace" {
 
 variable "irsa_enabled" {
   type        = string
-  default     = "true"
+  default     = "false"
   description = "Set to false to prevent the module from creating irsa resources"
 }
 
@@ -53,7 +53,7 @@ variable "snapshot_enabled" {
 }
 variable "assume_enabled" {
   type        = string
-  default     = "false"
+  default     = "true"
   description = "Set to false to prevent the module from creating assume resources"
 }
 
