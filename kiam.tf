@@ -35,19 +35,6 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-data "aws_iam_policy_document" "elasticsearch_role_policy" {
-  source_json = var.s3_manual_snapshot_repository != "" ? data.aws_iam_policy_document.elasticsearch_role_snapshot_policy[0].json : data.aws_iam_policy_document.empty.json
-
-  statement {
-    actions = [
-      "sts:AssumeRole",
-      "es:ESHttp*",
-    ]
-
-    resources = ["${aws_elasticsearch_domain.elasticsearch_domain.arn}/*"]
-  }
-}
-
 data "aws_iam_policy_document" "empty" {
 }
 
