@@ -33,9 +33,13 @@ resource "kubernetes_deployment" "aws-es-proxy" {
       spec {
         service_account_name = local.aws_es_irsa_sa_name
         container {
-          image = "ministryofjustice/cloud-platform-tools:aws-es-proxy"
+          image = "abutaha/aws-es-proxy:v1.0"
           name  = "aws-es-proxy"
-
+          security_context {
+            allow_privilege_escalation = false
+            run_as_non_root = true
+            run_as_user = 10001
+          }
           port {
             container_port = 9200
           }
