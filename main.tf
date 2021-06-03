@@ -255,6 +255,7 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
   }
 }
 
+# Domain access policy to allow or deny access by IAM role ARN
 data "aws_iam_policy_document" "iam_role_policy" {
   statement {
     actions = [
