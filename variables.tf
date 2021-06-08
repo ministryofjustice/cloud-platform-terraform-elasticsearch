@@ -65,7 +65,7 @@ variable "elasticsearch_version" {
 
 variable "instance_type" {
   type        = string
-  default     = "t2.small.elasticsearch"
+  default     = "t3.medium.elasticsearch"
   description = "Elasticsearch instance type for data nodes in the cluster"
 }
 
