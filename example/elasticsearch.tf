@@ -1,13 +1,10 @@
 /*
- * When using this module through the cloud-platform-environments, the following
- * two variables are automatically supplied by the pipeline.
+ * When using this module through the cloud-platform-environments,
+ * this variable is automatically supplied by the pipeline.
  *
- */
+*/
 
 variable "cluster_name" {
-}
-
-variable "cluster_state_bucket" {
 }
 
 /*
@@ -30,5 +27,13 @@ module "example_team_es" {
 
   # change the elasticsearch version as you see fit.
   elasticsearch_version = "7.1"
+
+  # This will enable creation of manual snapshot in s3 repo, provide the "s3 bucket arn" to create snapshot in s3.
+  # s3_manual_snapshot_repository = "s3-bucket-arn"
+
+  # When we migrate to EKS cluster, this will enable to use IRSA instead of KIAM
+  # irsa_enabled          = "true"
+  # assume_enabled        = "false"
+
 }
 

@@ -40,10 +40,21 @@ variable "namespace" {
   description = "Namespace from which the module is requested"
 }
 
-variable "enabled" {
+variable "irsa_enabled" {
+  type        = string
+  default     = "false"
+  description = "Set to false to prevent the module from creating irsa resources"
+}
+
+variable "snapshot_enabled" {
   type        = string
   default     = "true"
-  description = "Set to false to prevent the module from creating any resources"
+  description = "Set to false to prevent the module from creating snapshot resources"
+}
+variable "assume_enabled" {
+  type        = string
+  default     = "true"
+  description = "Set to false to prevent the module from creating assume resources"
 }
 
 variable "elasticsearch_version" {
@@ -54,7 +65,7 @@ variable "elasticsearch_version" {
 
 variable "instance_type" {
   type        = string
-  default     = "t2.small.elasticsearch"
+  default     = "t3.medium.elasticsearch"
   description = "Elasticsearch instance type for data nodes in the cluster"
 }
 
@@ -172,6 +183,12 @@ variable "aws_es_proxy_service_name" {
   description = "Name used by aws-es-proxy service"
 }
 
+variable "aws_es_irsa_sa_name" {
+  type        = string
+  default     = "aws-es-irsa-sa"
+  description = "Name used by aws-es irsa service account"
+}
+
 variable "aws-es-proxy-replica-count" {
   type        = number
   default     = 1
@@ -182,4 +199,10 @@ variable "s3_manual_snapshot_repository" {
   type        = string
   default     = ""
   description = "ARN of S3 bucket to use for manual snapshot repository"
+}
+
+variable "eks_cluster_oidc_issuer_url" {
+  description = "If enable_irsa variable is set to true this is going to be used when we create the IAM OIDC role"
+  type        = string
+  default     = ""
 }
