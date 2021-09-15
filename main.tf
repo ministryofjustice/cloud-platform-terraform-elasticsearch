@@ -16,7 +16,7 @@ data "terraform_remote_state" "cluster" {
   config = {
     bucket = "cloud-platform-terraform-state"
     region = "eu-west-1"
-    key    = "aws-accounts/cloud-platform-aws/vpc/eks/${var.cluster_name}/terraform.tfstate"
+    key    = "aws-accounts/cloud-platform-aws/vpc/eks/live/terraform.tfstate"
   }
 }
 
