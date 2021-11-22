@@ -39,8 +39,9 @@ locals {
   aws_es_irsa_sa_name                 = var.irsa_enabled ? var.aws_es_irsa_sa_name : null
   assume_role_name                    = var.assume_enabled ? local.identifier : null
   eks_cluster_oidc_issuer_url         = var.irsa_enabled ? data.aws_eks_cluster.live.identity[0].oidc[0].issuer : null
-  es_domain_policy_identifiers = tolist([aws_iam_role.elasticsearch_role.arn, module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn])
+  es_domain_policy_identifiers = var.assume_enabled ? aws_iam_role.elasticsearch_role.arn : tolist([aws_iam_role.elasticsearch_role.arn, module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn])
 }
+
 
 resource "aws_security_group" "security_group" {
   name        = local.identifier
