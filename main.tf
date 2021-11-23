@@ -266,7 +266,18 @@ data "aws_iam_policy_document" "iam_role_policy" {
   }
 }
 
+resource "time_sleep" "irsa_role_arn_creation" {
+  create_duration = "10s"
+
+  triggers = {
+    # This sets up a proper dependency on the irsa service link role arn creation
+    role_arn = module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn
+  }
+}
+
+
 resource "aws_elasticsearch_domain_policy" "domain_policy" {
+  depends_on = [time_sleep.irsa_role_arn_creation]
   domain_name     = local.elasticsearch_domain_name
   access_policies = join("", data.aws_iam_policy_document.iam_role_policy.*.json)
 }
