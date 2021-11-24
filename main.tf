@@ -34,13 +34,14 @@ resource "random_id" "id" {
 }
 
 locals {
-  identifier                   = "cloud-platform-${random_id.id.hex}"
-  elasticsearch_domain_name    = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
-  aws_es_irsa_sa_name          = var.irsa_enabled ? var.aws_es_irsa_sa_name : null
-  assume_role_name             = var.assume_enabled ? local.identifier : null
-  eks_cluster_oidc_issuer_url  = var.irsa_enabled ? data.aws_eks_cluster.live.identity[0].oidc[0].issuer : null
-  es_domain_policy_identifiers = var.assume_enabled ? aws_iam_role.elasticsearch_role[0].arn : module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn
+  identifier                          = "cloud-platform-${random_id.id.hex}"
+  elasticsearch_domain_name           = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
+  aws_es_irsa_sa_name                 = var.irsa_enabled ? var.aws_es_irsa_sa_name : null
+  assume_role_name                    = var.assume_enabled ? local.identifier : null
+  eks_cluster_oidc_issuer_url         = var.irsa_enabled ? data.aws_eks_cluster.live.identity[0].oidc[0].issuer : null
+  es_domain_policy_identifiers = var.assume_enabled ? tolist([aws_iam_role.elasticsearch_role.arn]) : tolist([aws_iam_role.elasticsearch_role.arn, module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn])
 }
+
 
 resource "aws_security_group" "security_group" {
   name        = local.identifier
@@ -256,7 +257,7 @@ data "aws_iam_policy_document" "iam_role_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = [local.es_domain_policy_identifiers]
+      identifiers = local.es_domain_policy_identifiers
     }
 
     resources = [
@@ -265,7 +266,18 @@ data "aws_iam_policy_document" "iam_role_policy" {
   }
 }
 
+resource "time_sleep" "irsa_role_arn_creation" {
+  create_duration = "10s"
+
+  triggers = {
+    # This sets up a proper dependency on the irsa service link role arn creation
+    role_arn = module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn
+  }
+}
+
+
 resource "aws_elasticsearch_domain_policy" "domain_policy" {
+  depends_on = [time_sleep.irsa_role_arn_creation]
   domain_name     = local.elasticsearch_domain_name
   access_policies = join("", data.aws_iam_policy_document.iam_role_policy.*.json)
 }

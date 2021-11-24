@@ -2,7 +2,6 @@
 
 # Role that pods can assume for access to elasticsearch and kibana
 resource "aws_iam_role" "elasticsearch_role" {
-  count              = var.assume_enabled == "true" ? 1 : 0
   name               = local.identifier
   description        = "IAM Role to assume to access the Elasticsearch -${var.elasticsearch-domain} cluster"
   assume_role_policy = join("", data.aws_iam_policy_document.assume_role.*.json)
@@ -19,7 +18,6 @@ resource "aws_iam_role" "elasticsearch_role" {
 }
 
 data "aws_iam_policy_document" "assume_role" {
-  count = var.assume_enabled == "true" ? 1 : 0
 
   statement {
     actions = [
@@ -39,8 +37,7 @@ data "aws_iam_policy_document" "empty" {
 }
 
 resource "aws_iam_role_policy" "elasticsearch_role_policy" {
-  count  = var.assume_enabled == "true" ? 1 : 0
   name   = local.identifier
-  role   = aws_iam_role.elasticsearch_role[0].id
+  role   = aws_iam_role.elasticsearch_role.id
   policy = data.aws_iam_policy_document.elasticsearch_role_policy.json
 }
