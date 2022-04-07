@@ -6,7 +6,7 @@ module "iam_assumable_role_irsa_elastic_search" {
   create_role                   = true
   role_name                     = "${local.identifier}-irsa"
   provider_url                  = local.eks_cluster_oidc_issuer_url
-  role_policy_arns              = [aws_iam_policy.irsa_elastic_search.0.arn]
+  role_policy_arns              = [aws_iam_policy.irsa_elastic_search.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.namespace}:${var.aws_es_irsa_sa_name}"]
 }
 
