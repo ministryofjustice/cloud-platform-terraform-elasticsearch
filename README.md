@@ -22,8 +22,6 @@ See [the example README](https://github.com/ministryofjustice/cloud-platform-ter
 | aws-es-proxy-replica-count | Number of es proxy replicas  | string | `1` | no |
 | s3_manual_snapshot_repository | ARN of S3 bucket to use for manual snapshot repository  | string | | no |
 | encryption_at_rest | Whether to encrypt the domain at rest | string | false | no |
-| irsa_enabled | This will enable to use IRSA instead of KIAM | bool | false | no |
-| assume_enabled | This will enable to use KIAM instead of IRSA | bool | true | no |
 
 
 ### Tags

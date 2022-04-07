@@ -40,21 +40,11 @@ variable "namespace" {
   description = "Namespace from which the module is requested"
 }
 
-variable "irsa_enabled" {
-  type        = string
-  default     = "false"
-  description = "Set to false to prevent the module from creating irsa resources"
-}
 
 variable "snapshot_enabled" {
   type        = string
   default     = "true"
   description = "Set to false to prevent the module from creating snapshot resources"
-}
-variable "assume_enabled" {
-  type        = string
-  default     = "true"
-  description = "Set to false to prevent the module from creating assume resources"
 }
 
 variable "elasticsearch_version" {
