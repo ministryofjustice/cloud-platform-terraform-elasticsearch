@@ -31,9 +31,6 @@ module "example_team_es" {
   # This will enable creation of manual snapshot in s3 repo, provide the "s3 bucket arn" to create snapshot in s3.
   # s3_manual_snapshot_repository = "s3-bucket-arn"
 
-  # When we migrate to EKS cluster, this will enable to use IRSA instead of KIAM
-  # irsa_enabled          = "true"
-  # assume_enabled        = "false"
 
 }
 

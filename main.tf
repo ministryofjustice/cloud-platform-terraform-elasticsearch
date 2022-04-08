@@ -36,10 +36,9 @@ resource "random_id" "id" {
 locals {
   identifier                          = "cloud-platform-${random_id.id.hex}"
   elasticsearch_domain_name           = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
-  aws_es_irsa_sa_name                 = var.irsa_enabled ? var.aws_es_irsa_sa_name : null
-  assume_role_name                    = var.assume_enabled ? local.identifier : null
-  eks_cluster_oidc_issuer_url         = var.irsa_enabled ? data.aws_eks_cluster.live.identity[0].oidc[0].issuer : null
-  es_domain_policy_identifiers = var.assume_enabled ? tolist([aws_iam_role.elasticsearch_role.arn]) : tolist([aws_iam_role.elasticsearch_role.arn, module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn])
+  aws_es_irsa_sa_name                 = var.aws_es_irsa_sa_name
+  eks_cluster_oidc_issuer_url         = data.aws_eks_cluster.live.identity[0].oidc[0].issuer
+  es_domain_policy_identifiers = module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn
 }
 
 
@@ -61,6 +60,9 @@ resource "aws_security_group" "security_group" {
     protocol    = "-1"
     cidr_blocks = [for s in data.aws_subnet.private : s.cidr_block]
   }
+}
+
+data "aws_iam_policy_document" "empty" {
 }
 
 # Common aws_iam_policy_document used by both assume and irsa
@@ -257,7 +259,7 @@ data "aws_iam_policy_document" "iam_role_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = local.es_domain_policy_identifiers
+      identifiers = [local.es_domain_policy_identifiers]
     }
 
     resources = [

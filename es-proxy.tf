@@ -25,9 +25,6 @@ resource "kubernetes_deployment" "aws-es-proxy" {
           app = "aws-es-proxy-${local.identifier}"
         }
 
-        annotations = {
-          "iam.amazonaws.com/role" = local.assume_role_name
-        }
       }
 
       spec {
