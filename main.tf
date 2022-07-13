@@ -1,6 +1,3 @@
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
-
 data "aws_vpc" "selected" {
   filter {
     name   = "tag:Name"
@@ -10,10 +7,6 @@ data "aws_vpc" "selected" {
 
 data "aws_eks_cluster" "live" {
   name = "live"
-}
-
-data "aws_route53_zone" "selected" {
-  name = "${var.cluster_name}.cloud-platform.service.justice.gov.uk"
 }
 
 data "aws_subnet_ids" "private" {
