@@ -34,10 +34,10 @@ resource "random_id" "id" {
 }
 
 locals {
-  identifier                          = "cloud-platform-${random_id.id.hex}"
-  elasticsearch_domain_name           = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
-  aws_es_irsa_sa_name                 = var.aws_es_irsa_sa_name
-  eks_cluster_oidc_issuer_url         = data.aws_eks_cluster.live.identity[0].oidc[0].issuer
+  identifier                   = "cloud-platform-${random_id.id.hex}"
+  elasticsearch_domain_name    = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
+  aws_es_irsa_sa_name          = var.aws_es_irsa_sa_name
+  eks_cluster_oidc_issuer_url  = data.aws_eks_cluster.live.identity[0].oidc[0].issuer
   es_domain_policy_identifiers = module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn
 }
 
@@ -279,7 +279,7 @@ resource "time_sleep" "irsa_role_arn_creation" {
 
 
 resource "aws_elasticsearch_domain_policy" "domain_policy" {
-  depends_on = [time_sleep.irsa_role_arn_creation]
+  depends_on      = [time_sleep.irsa_role_arn_creation]
   domain_name     = local.elasticsearch_domain_name
   access_policies = join("", data.aws_iam_policy_document.iam_role_policy.*.json)
 }
