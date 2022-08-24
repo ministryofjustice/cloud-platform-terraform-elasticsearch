@@ -14,7 +14,8 @@ variable "cluster_name" {
  *
  */
 module "example_team_es" {
-  source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=3.0"
+  # source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=3.9.5"
+  source = "../"
   cluster_name           = var.cluster_name
   application            = "exampleapp"
   business-unit          = "example-bu"
@@ -26,11 +27,10 @@ module "example_team_es" {
   namespace              = "my-namespace"
 
   # change the elasticsearch version as you see fit.
-  elasticsearch_version = "7.1"
+  elasticsearch_version = "7.10"
 
   # This will enable creation of manual snapshot in s3 repo, provide the "s3 bucket arn" to create snapshot in s3.
   # s3_manual_snapshot_repository = "s3-bucket-arn"
-
 
 }
 
