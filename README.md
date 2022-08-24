@@ -9,24 +9,15 @@ The resources created will have a randomised name of the format `cloud-platform-
 
 ## Usage
 
-See [the example README](https://github.com/ministryofjustice/cloud-platform-terraform-elasticsearch/blob/main/example/README.md)
-## Inputs
+See [the example](example/), also Accessing section below.
 
-| Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| cluster_name | The name of the kubernetes cluster (eg.: live-1) | string |  | yes |
-| elasticsearch-domain | The domain name of the Elasticsearch cluster to create. This will be appended with the namespace name and will look like `<team_name>-<environment-name>-<elasticsearch-domain>`  | string | | yes |
-| namespace | Namespace which will access the Elasticsearch cluster | string | | yes |
-| elasticsearch_version | Version of Elasticsearch to deploy  | string | `7.1` | no |
-| aws_es_proxy_service_name | Name to be used by aws-es-proxy service  | string | "aws-es-proxy-service" | no |
-| aws-es-proxy-replica-count | Number of es proxy replicas  | string | `1` | no |
-| s3_manual_snapshot_repository | ARN of S3 bucket to use for manual snapshot repository  | string | | no |
-| encryption_at_rest | Whether to encrypt the domain at rest | string | false | no |
+<!--- BEGIN_TF_DOCS --->
 
+<!--- END_TF_DOCS --->
 
 ### Tags
 
-Some of the inputs are tags. All infrastructure resources need to be tagged according to the [MOJ techincal guidence](https://ministryofjustice.github.io/technical-guidance/standards/documenting-infrastructure-owners/#documenting-owners-of-infrastructure). The tags are stored as variables that you will need to fill out as part of your module.
+Some of the inputs are tags. All infrastructure resources need to be tagged according to the [MOJ technical guidance](https://ministryofjustice.github.io/technical-guidance/standards/documenting-infrastructure-owners/#documenting-owners-of-infrastructure). The tags are stored as variables that you will need to fill out as part of your module.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
