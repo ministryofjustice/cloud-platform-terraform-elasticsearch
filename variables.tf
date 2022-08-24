@@ -59,6 +59,8 @@ variable "elasticsearch_version" {
 
 variable "instance_type" {
   type        = string
+  default     = "t3.medium.elasticsearch"
+  # this will be default once we upgrade to aws provider v4
   default     = "t4g.medium.elasticsearch"
   description = "Elasticsearch instance type for data nodes in the cluster"
 }
@@ -89,7 +91,9 @@ variable "ebs_volume_size" {
 
 variable "ebs_volume_type" {
   type        = string
-  default     = "gp3"
+  default = "gp2"
+  # this will be default once we upgrade to aws provider v4
+  # default     = "gp3"
   description = "Storage type of EBS volumes"
 }
 
