@@ -98,7 +98,9 @@ variable "ebs_volume_type" {
 }
 
 variable "ebs_iops" {
-  default     = 3000
+  default     = 0
+  # this will be default once we upgrade to aws provider v4
+  # default     = 3000
   description = "The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type"
   type        = number
 }
