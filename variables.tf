@@ -61,7 +61,7 @@ variable "instance_type" {
   type        = string
   default     = "t3.medium.elasticsearch"
   # this will be default once we upgrade to aws provider v4
-  default     = "t4g.medium.elasticsearch"
+  # default     = "t4g.medium.elasticsearch"
   description = "Elasticsearch instance type for data nodes in the cluster"
 }
 
