@@ -1,11 +1,3 @@
-/*
- * When using this module through the cloud-platform-environments,
- * this variable is automatically supplied by the pipeline.
- *
-*/
-
-variable "cluster_name" {
-}
 
 /*
  * Make sure that you use the latest version of the module by changing the
