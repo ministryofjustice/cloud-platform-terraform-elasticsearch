@@ -15,16 +15,17 @@ variable "cluster_name" {
  */
 module "example_team_es" {
   # source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=3.9.5"
-  source = "../"
+  source                 = "../"
   cluster_name           = var.cluster_name
-  application            = "exampleapp"
-  business-unit          = "example-bu"
-  environment-name       = "dev"
-  infrastructure-support = "cloud-platform@digital.justice.gov.uk"
-  is-production          = "false"
-  team_name              = "example-team"
-  elasticsearch-domain   = "example-es"
-  namespace              = "my-namespace"
+  team_name              = var.team_name
+  business-unit          = var.business_unit
+  application            = var.application
+  is-production          = var.is_production
+  environment-name       = var.environment
+  infrastructure-support = var.infrastructure_support
+  namespace              = var.namespace
+
+  elasticsearch-domain = "example-es"
 
   # change the elasticsearch version as you see fit.
   elasticsearch_version = "7.10"
