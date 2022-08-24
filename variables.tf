@@ -94,7 +94,6 @@ variable "ebs_volume_type" {
 }
 
 variable "ebs_iops" {
-  default     = 0
   description = "The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type"
   type        = number
 }
