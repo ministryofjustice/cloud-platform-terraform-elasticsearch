@@ -9,7 +9,7 @@ The resources created will have a randomised name of the format `cloud-platform-
 
 ## Usage
 
-See [the example](example/), also Accessing section below.
+For the most basic setup, see [the example](example/) folder. Also check the *Accessing* section below.
 
 <!--- BEGIN_TF_DOCS --->
 ## Requirements
@@ -167,3 +167,8 @@ So, the connection from your machine to the Elasticsearch works like this:
 +--------------+             +---------------------+          +--------------+
 ```
 You can access the Elasticsearch from your local machine by doing `http://localhost:9200` and access kibana by doing `http://localhost:9200/_plugin/kibana/app/kibana`
+
+### Creating a public IP endpoint
+
+You can create an ingress resource in your namespace, fronting the `aws-es-proxy-service` SVC; see [the user guide](https://user-guide.cloud-platform.service.justice.gov.uk/documentation/deploying-an-app/helloworld-app-deploy.html#ingress-yaml) for details.
+The HTTP endpoint is not authenticated by default, also check [the guide](https://user-guide.cloud-platform.service.justice.gov.uk/documentation/deploying-an-app/helloworld-app-deploy.html#add-http-basic-authentication) for how to add HTTP Basic Authentication.
