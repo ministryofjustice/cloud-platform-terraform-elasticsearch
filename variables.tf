@@ -53,13 +53,15 @@ variable "snapshot_enabled" {
 
 variable "elasticsearch_version" {
   type        = string
-  default     = "7.1"
+  default     = "7.10"
   description = "Version of Elasticsearch to deploy"
 }
 
 variable "instance_type" {
   type        = string
   default     = "t3.medium.elasticsearch"
+  # this will be default once we upgrade to aws provider v4
+  # default     = "t4g.medium.elasticsearch"
   description = "Elasticsearch instance type for data nodes in the cluster"
 }
 
@@ -89,12 +91,16 @@ variable "ebs_volume_size" {
 
 variable "ebs_volume_type" {
   type        = string
-  default     = "gp2"
+  default = "gp2"
+  # this will be default once we upgrade to aws provider v4
+  # default     = "gp3"
   description = "Storage type of EBS volumes"
 }
 
 variable "ebs_iops" {
   default     = 0
+  # this will be default once we upgrade to aws provider v4
+  # default     = 3000
   description = "The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type"
   type        = number
 }
