@@ -205,10 +205,9 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
     zone_awareness_config {
       availability_zone_count = var.availability_zone_count
     }
-  }
-
-  cold_storage_options {
-    enabled = var.cold_enabled
+    cold_storage_options {
+      enabled = var.cold_enabled
+    }
   }
 
   vpc_options {
