@@ -193,7 +193,7 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
   }
 
   cluster_config {
-    instance_count           = var.instance_count - var.warm_count
+    instance_count           = var.instance_count
     instance_type            = var.instance_type
     dedicated_master_enabled = var.dedicated_master_enabled
     dedicated_master_count   = var.dedicated_master_count
