@@ -104,8 +104,9 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | <a name="input_snapshot_enabled"></a> [snapshot\_enabled](#input\_snapshot\_enabled) | Set to false to prevent the module from creating snapshot resources | `string` | `"true"` | no |
 | <a name="input_team_name"></a> [team\_name](#input\_team\_name) | The name of your development team | `string` | n/a | yes |
 | <a name="input_warm_count"></a> [warm\_count](#input\_warm\_count) | Number of warm data nodes in the cluster | `number` | `0` | no |
+| <a name="input_warm_enabled"></a> [warm\_enabled](#input\_warm\_enabled) | Whether to enable warm storage | `bool` | `false` | no |
 | <a name="input_warm_type"></a> [warm\_type](#input\_warm\_type) | Elasticsearch instance type for warm data nodes in the cluster | `string` | `"ultrawarm1.medium.elasticsearch"` | no |
-| <a name="input_zone_awareness_enabled"></a> [zone\_awareness\_enabled](#input\_zone\_awareness\_enabled) | Enable zone awareness for Elasticsearch cluster | `string` | `"true"` | no |
+| <a name="input_zone_awareness_enabled"></a> [zone\_awareness\_enabled](#input\_zone\_awareness\_enabled) | Enable zone awareness for Elasticsearch cluster | `bool` | `true` | no |
 
 ## Outputs
 
