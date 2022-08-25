@@ -71,7 +71,7 @@ variable "instance_count" {
 
 variable "warm_count" {
   description = "Number of warm data nodes in the cluster"
-  default     = 0
+  default     = 2
   type        = number
 }
 
@@ -167,7 +167,7 @@ variable "dedicated_master_enabled" {
 
 variable "dedicated_master_count" {
   description = "Number of dedicated master nodes in the cluster"
-  default     = 0
+  default     = 3
   type        = number
 }
 
