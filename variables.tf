@@ -59,16 +59,25 @@ variable "elasticsearch_version" {
 
 variable "instance_type" {
   type        = string
-  default     = "t3.medium.elasticsearch"
-  # this will be default once we upgrade to aws provider v4
-  # default     = "t4g.medium.elasticsearch"
+  default     = "t4g.medium.elasticsearch"
   description = "Elasticsearch instance type for data nodes in the cluster"
 }
 
 variable "instance_count" {
-  description = "Number of data nodes in the cluster"
+  description = "Total data nodes in the cluster, includes warm"
   default     = 3
   type        = number
+}
+
+variable "warm_count" {
+  description = "Number of warm data nodes in the cluster"
+  type        = number
+}
+
+variable "warm_type" {
+  type        = string
+  default     = "ultrawarm1.medium.elasticsearch"
+  description = "Elasticsearch instance type for warm data nodes in the cluster"
 }
 
 variable "zone_awareness_enabled" {
@@ -91,16 +100,12 @@ variable "ebs_volume_size" {
 
 variable "ebs_volume_type" {
   type        = string
-  default = "gp2"
-  # this will be default once we upgrade to aws provider v4
-  # default     = "gp3"
+  default     = "gp3"
   description = "Storage type of EBS volumes"
 }
 
 variable "ebs_iops" {
-  default     = 0
-  # this will be default once we upgrade to aws provider v4
-  # default     = 3000
+  default     = 3000
   description = "The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type"
   type        = number
 }
@@ -161,7 +166,7 @@ variable "dedicated_master_count" {
 
 variable "dedicated_master_type" {
   type        = string
-  default     = "t2.small.elasticsearch"
+  default     = "t4g.small.elasticsearch"
   description = "Instance type of the dedicated master nodes in the cluster"
 }
 
