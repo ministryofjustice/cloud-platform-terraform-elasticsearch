@@ -207,6 +207,10 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
     }
   }
 
+  cold_storage_options {
+    enabled = var.cold_enabled
+  }
+
   vpc_options {
     security_group_ids = [aws_security_group.security_group.id]
     subnet_ids         = data.aws_subnet_ids.private.ids

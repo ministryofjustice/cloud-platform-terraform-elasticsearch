@@ -87,6 +87,12 @@ variable "warm_enabled" {
   description = "Whether to enable warm storage"
 }
 
+variable "cold_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to enable cold storage"
+}
+
 variable "zone_awareness_enabled" {
   type        = bool
   default     = true
