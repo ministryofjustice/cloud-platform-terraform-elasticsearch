@@ -78,7 +78,7 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | <a name="input_aws_es_proxy_service_name"></a> [aws\_es\_proxy\_service\_name](#input\_aws\_es\_proxy\_service\_name) | Name used by aws-es-proxy service | `string` | `"aws-es-proxy-service"` | no |
 | <a name="input_business-unit"></a> [business-unit](#input\_business-unit) | Area of the MOJ responsible for the service | `string` | `"mojdigital"` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name of the cluster (eg.: cloud-platform-live-0) | `string` | n/a | yes |
-| <a name="input_dedicated_master_count"></a> [dedicated\_master\_count](#input\_dedicated\_master\_count) | Number of dedicated master nodes in the cluster | `number` | `0` | no |
+| <a name="input_dedicated_master_count"></a> [dedicated\_master\_count](#input\_dedicated\_master\_count) | Number of dedicated master nodes in the cluster | `number` | `3` | no |
 | <a name="input_dedicated_master_enabled"></a> [dedicated\_master\_enabled](#input\_dedicated\_master\_enabled) | Indicates whether dedicated master nodes are enabled for the cluster | `string` | `"false"` | no |
 | <a name="input_dedicated_master_type"></a> [dedicated\_master\_type](#input\_dedicated\_master\_type) | Instance type of the dedicated master nodes in the cluster | `string` | `"t3.small.search"` | no |
 | <a name="input_ebs_iops"></a> [ebs\_iops](#input\_ebs\_iops) | The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type | `number` | `3000` | no |
@@ -103,7 +103,7 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | <a name="input_s3_manual_snapshot_repository"></a> [s3\_manual\_snapshot\_repository](#input\_s3\_manual\_snapshot\_repository) | ARN of S3 bucket to use for manual snapshot repository | `string` | `""` | no |
 | <a name="input_snapshot_enabled"></a> [snapshot\_enabled](#input\_snapshot\_enabled) | Set to false to prevent the module from creating snapshot resources | `string` | `"true"` | no |
 | <a name="input_team_name"></a> [team\_name](#input\_team\_name) | The name of your development team | `string` | n/a | yes |
-| <a name="input_warm_count"></a> [warm\_count](#input\_warm\_count) | Number of warm data nodes in the cluster | `number` | `0` | no |
+| <a name="input_warm_count"></a> [warm\_count](#input\_warm\_count) | Number of warm data nodes in the cluster | `number` | `2` | no |
 | <a name="input_warm_enabled"></a> [warm\_enabled](#input\_warm\_enabled) | Whether to enable warm storage | `bool` | `false` | no |
 | <a name="input_warm_type"></a> [warm\_type](#input\_warm\_type) | Elasticsearch instance type for warm data nodes in the cluster | `string` | `"ultrawarm1.medium.elasticsearch"` | no |
 | <a name="input_zone_awareness_enabled"></a> [zone\_awareness\_enabled](#input\_zone\_awareness\_enabled) | Enable zone awareness for Elasticsearch cluster | `bool` | `true` | no |
