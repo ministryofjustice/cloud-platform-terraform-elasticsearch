@@ -71,6 +71,7 @@ variable "instance_count" {
 
 variable "warm_count" {
   description = "Number of warm data nodes in the cluster"
+  default     = 0
   type        = number
 }
 
