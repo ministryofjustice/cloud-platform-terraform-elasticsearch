@@ -198,9 +198,9 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
     dedicated_master_enabled = var.dedicated_master_enabled
     dedicated_master_count   = var.dedicated_master_count
     dedicated_master_type    = var.dedicated_master_type
-    warm_count               = var.warm_count
+    warm_count               = var.warm_count < 2 ? 2 : var.warm_count
     warm_enabled             = var.warm_count > 0 ? true : false
-    warm_type                = var.warm_count > 0 ? var.warm_type : ""
+    warm_type                = var.warm_type
     zone_awareness_enabled   = var.zone_awareness_enabled
     zone_awareness_config {
       availability_zone_count = var.availability_zone_count
