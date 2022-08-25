@@ -59,7 +59,7 @@ variable "elasticsearch_version" {
 
 variable "instance_type" {
   type        = string
-  default     = "t4g.medium.elasticsearch"
+  default     = "t3.medium.search"
   description = "Elasticsearch instance type for data nodes in the cluster"
 }
 
@@ -173,7 +173,7 @@ variable "dedicated_master_count" {
 
 variable "dedicated_master_type" {
   type        = string
-  default     = "t4g.small.elasticsearch"
+  default     = "t3.small.search"
   description = "Instance type of the dedicated master nodes in the cluster"
 }
 
