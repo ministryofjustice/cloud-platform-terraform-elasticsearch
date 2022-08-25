@@ -81,9 +81,15 @@ variable "warm_type" {
   description = "Elasticsearch instance type for warm data nodes in the cluster"
 }
 
+variable "warm_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to enable warm storage"
+}
+
 variable "zone_awareness_enabled" {
-  type        = string
-  default     = "true"
+  type        = bool
+  default     = true
   description = "Enable zone awareness for Elasticsearch cluster"
 }
 
