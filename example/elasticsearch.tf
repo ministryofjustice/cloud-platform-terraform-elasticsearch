@@ -6,7 +6,7 @@
  *
  */
 module "example_team_es" {
-  # source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=3.9.5"
+  # source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=4.0.0"
   source                 = "../"
   cluster_name           = var.cluster_name
   team_name              = var.team_name
@@ -25,5 +25,6 @@ module "example_team_es" {
   # This will enable creation of manual snapshot in s3 repo, provide the "s3 bucket arn" to create snapshot in s3.
   # s3_manual_snapshot_repository = "s3-bucket-arn"
 
+  # this is used by the index policies for transition to warm/cold
+  timestamp_field = "last_updated"
 }
-
