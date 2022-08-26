@@ -281,7 +281,7 @@ resource "aws_elasticsearch_domain_policy" "domain_policy" {
   access_policies = join("", data.aws_iam_policy_document.iam_role_policy.*.json)
 }
 
-data "template_file" "" {
+data "template_file" "ism_policy" {
   template = file("${path.module}/ism-policy.tpl.json")
 
   vars = {
