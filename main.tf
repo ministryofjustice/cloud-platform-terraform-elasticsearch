@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "empty" {
 
 # Common aws_iam_policy_document used by both assume and irsa
 data "aws_iam_policy_document" "elasticsearch_role_policy" {
-  source_json = var.s3_manual_snapshot_repository != "" ? data.aws_iam_policy_document.elasticsearch_role_snapshot_policy[0].json : data.aws_iam_policy_document.empty.json
+  source_policy_documents = var.s3_manual_snapshot_repository != "" ? data.aws_iam_policy_document.elasticsearch_role_snapshot_policy[0].json : data.aws_iam_policy_document.empty.json
 
   statement {
     actions = [
@@ -71,7 +71,6 @@ data "aws_iam_policy_document" "elasticsearch_role_policy" {
     resources = ["${aws_elasticsearch_domain.elasticsearch_domain.arn}/*"]
   }
 }
-
 
 # Role that ES can assume for creating/restoring from manual snapshots
 
@@ -280,4 +279,15 @@ resource "aws_elasticsearch_domain_policy" "domain_policy" {
   depends_on      = [time_sleep.irsa_role_arn_creation]
   domain_name     = local.elasticsearch_domain_name
   access_policies = join("", data.aws_iam_policy_document.iam_role_policy.*.json)
+}
+
+data "template_file" "" {
+  template = file("${path.module}/ism-policy.tpl.json")
+
+  vars = {
+    timestamp_field   = var.timestamp_field
+    warm_transition   = var.warm_transition
+    cold_transition   = var.cold_transition
+    delete_transition = var.delete_transition
+  }
 }
