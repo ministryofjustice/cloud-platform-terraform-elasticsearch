@@ -65,7 +65,7 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | [aws_subnet.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 | [aws_subnet_ids.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet_ids) | data source |
 | [aws_vpc.selected](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
-| [template_file.](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
+| [template_file.ism_policy](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
 
 ## Inputs
 
@@ -119,6 +119,7 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | Name | Description |
 |------|-------------|
 | <a name="output_aws_es_proxy_url"></a> [aws\_es\_proxy\_url](#output\_aws\_es\_proxy\_url) | URL for aws-es-proxy service |
+| <a name="output_ism_policy"></a> [ism\_policy](#output\_ism\_policy) | paste this in Kibana, waiting for https://github.com/hashicorp/terraform-provider-aws/issues/25527 |
 | <a name="output_snapshot_role_arn"></a> [snapshot\_role\_arn](#output\_snapshot\_role\_arn) | Snapshot role ARN |
 
 <!--- END_TF_DOCS --->
