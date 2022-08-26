@@ -289,5 +289,6 @@ data "template_file" "ism_policy" {
     warm_transition   = var.warm_transition
     cold_transition   = var.cold_transition
     delete_transition = var.delete_transition
+    index_pattern     = var.index_pattern
   }
 }
