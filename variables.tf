@@ -111,6 +111,11 @@ variable "delete_transition" {
   description = "Time until indexes are permanently deleted"
 }
 
+variable "timestamp_field" {
+  type        = string
+  description = "Field Kibana identifies as Time field, when creating the index pattern"
+}
+
 variable "zone_awareness_enabled" {
   type        = bool
   default     = true
