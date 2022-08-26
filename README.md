@@ -108,6 +108,7 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | <a name="input_s3_manual_snapshot_repository"></a> [s3\_manual\_snapshot\_repository](#input\_s3\_manual\_snapshot\_repository) | ARN of S3 bucket to use for manual snapshot repository | `string` | `""` | no |
 | <a name="input_snapshot_enabled"></a> [snapshot\_enabled](#input\_snapshot\_enabled) | Set to false to prevent the module from creating snapshot resources | `string` | `"true"` | no |
 | <a name="input_team_name"></a> [team\_name](#input\_team\_name) | The name of your development team | `string` | n/a | yes |
+| <a name="input_timestamp_field"></a> [timestamp\_field](#input\_timestamp\_field) | Field Kibana identifies as Time field, when creating the index pattern | `string` | n/a | yes |
 | <a name="input_warm_count"></a> [warm\_count](#input\_warm\_count) | Number of warm data nodes in the cluster | `number` | `2` | no |
 | <a name="input_warm_enabled"></a> [warm\_enabled](#input\_warm\_enabled) | Whether to enable warm storage | `bool` | `false` | no |
 | <a name="input_warm_transition"></a> [warm\_transition](#input\_warm\_transition) | Time until transition to warm storage | `string` | `"7d"` | no |
