@@ -70,6 +70,12 @@
           }
         ]
       }
-    ]
+    ],
+    "ism_template": [{
+      "index_patterns": [
+        "${index_pattern}"
+      ],
+      "priority": 100
+    }]
   }
 }

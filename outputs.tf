@@ -10,5 +10,5 @@ output "snapshot_role_arn" {
 
 output "ism_policy" {
   description = "paste this in Kibana, waiting for https://github.com/hashicorp/terraform-provider-aws/issues/25527"
-  value = data.template_file.ism_policy
+  value       = data.template_file.ism_policy
 }

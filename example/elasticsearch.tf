@@ -27,4 +27,5 @@ module "example_team_es" {
 
   # this is used by the index policies for transition to warm/cold
   timestamp_field = "last_updated"
+  index_pattern   = "test_data*"
 }

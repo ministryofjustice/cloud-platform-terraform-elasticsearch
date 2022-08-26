@@ -116,6 +116,11 @@ variable "timestamp_field" {
   description = "Field Kibana identifies as Time field, when creating the index pattern"
 }
 
+variable "index_pattern" {
+  type        = string
+  description = "Pattern created in Kibana, policy will apply to matching new indices"
+}
+
 variable "zone_awareness_enabled" {
   type        = bool
   default     = true
