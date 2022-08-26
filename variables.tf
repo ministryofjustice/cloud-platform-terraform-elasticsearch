@@ -113,11 +113,13 @@ variable "delete_transition" {
 
 variable "timestamp_field" {
   type        = string
+  default     = "last_updated"
   description = "Field Kibana identifies as Time field, when creating the index pattern"
 }
 
 variable "index_pattern" {
   type        = string
+  default     = "test_data*"
   description = "Pattern created in Kibana, policy will apply to matching new indices"
 }
 

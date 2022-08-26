@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "empty" {
 
 # Common aws_iam_policy_document used by both assume and irsa
 data "aws_iam_policy_document" "elasticsearch_role_policy" {
-  source_policy_documents = var.s3_manual_snapshot_repository != "" ? data.aws_iam_policy_document.elasticsearch_role_snapshot_policy[0].json : data.aws_iam_policy_document.empty.json
+  source_json = var.s3_manual_snapshot_repository != "" ? data.aws_iam_policy_document.elasticsearch_role_snapshot_policy[0].json : data.aws_iam_policy_document.empty.json
 
   statement {
     actions = [
