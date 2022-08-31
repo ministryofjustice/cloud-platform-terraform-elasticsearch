@@ -60,20 +60,72 @@ variable "elasticsearch_version" {
 variable "instance_type" {
   type        = string
   default     = "t3.medium.elasticsearch"
-  # this will be default once we upgrade to aws provider v4
-  # default     = "t4g.medium.elasticsearch"
   description = "Elasticsearch instance type for data nodes in the cluster"
 }
 
 variable "instance_count" {
-  description = "Number of data nodes in the cluster"
+  description = "Total data nodes in the cluster, includes warm"
   default     = 3
   type        = number
 }
 
-variable "zone_awareness_enabled" {
+variable "warm_count" {
+  description = "Number of warm data nodes in the cluster"
+  default     = 2
+  type        = number
+}
+
+variable "warm_type" {
   type        = string
-  default     = "true"
+  default     = "ultrawarm1.medium.elasticsearch"
+  description = "Elasticsearch instance type for warm data nodes in the cluster"
+}
+
+variable "warm_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to enable warm storage"
+}
+
+variable "warm_transition" {
+  type        = string
+  default     = "7d"
+  description = "Time until transition to warm storage"
+}
+
+variable "cold_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to enable cold storage"
+}
+
+variable "cold_transition" {
+  type        = string
+  default     = "30d"
+  description = "Time until transition to cold storage"
+}
+
+variable "delete_transition" {
+  type        = string
+  default     = "365d"
+  description = "Time until indexes are permanently deleted"
+}
+
+variable "timestamp_field" {
+  type        = string
+  default     = "last_updated"
+  description = "Field Kibana identifies as Time field, when creating the index pattern"
+}
+
+variable "index_pattern" {
+  type        = string
+  default     = "test_data*"
+  description = "Pattern created in Kibana, policy will apply to matching new indices"
+}
+
+variable "zone_awareness_enabled" {
+  type        = bool
+  default     = true
   description = "Enable zone awareness for Elasticsearch cluster"
 }
 
@@ -91,16 +143,12 @@ variable "ebs_volume_size" {
 
 variable "ebs_volume_type" {
   type        = string
-  default = "gp2"
-  # this will be default once we upgrade to aws provider v4
-  # default     = "gp3"
+  default     = "gp3"
   description = "Storage type of EBS volumes"
 }
 
 variable "ebs_iops" {
-  default     = 0
-  # this will be default once we upgrade to aws provider v4
-  # default     = 3000
+  default     = 3000
   description = "The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type"
   type        = number
 }
@@ -155,13 +203,13 @@ variable "dedicated_master_enabled" {
 
 variable "dedicated_master_count" {
   description = "Number of dedicated master nodes in the cluster"
-  default     = 0
+  default     = 3
   type        = number
 }
 
 variable "dedicated_master_type" {
   type        = string
-  default     = "t2.small.elasticsearch"
+  default     = "t3.small.elasticsearch"
   description = "Instance type of the dedicated master nodes in the cluster"
 }
 

@@ -72,7 +72,6 @@ data "aws_iam_policy_document" "elasticsearch_role_policy" {
   }
 }
 
-
 # Role that ES can assume for creating/restoring from manual snapshots
 
 data "aws_iam_policy_document" "elasticsearch_role_snapshot_policy" {
@@ -198,10 +197,15 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
     dedicated_master_enabled = var.dedicated_master_enabled
     dedicated_master_count   = var.dedicated_master_count
     dedicated_master_type    = var.dedicated_master_type
+    warm_count               = var.warm_count
+    warm_enabled             = var.warm_enabled
+    warm_type                = var.warm_type
     zone_awareness_enabled   = var.zone_awareness_enabled
-
     zone_awareness_config {
       availability_zone_count = var.availability_zone_count
+    }
+    cold_storage_options {
+      enabled = var.cold_enabled
     }
   }
 
@@ -275,4 +279,16 @@ resource "aws_elasticsearch_domain_policy" "domain_policy" {
   depends_on      = [time_sleep.irsa_role_arn_creation]
   domain_name     = local.elasticsearch_domain_name
   access_policies = join("", data.aws_iam_policy_document.iam_role_policy.*.json)
+}
+
+data "template_file" "ism_policy" {
+  template = file("${path.module}/ism-policy.tpl.json")
+
+  vars = {
+    timestamp_field   = var.timestamp_field
+    warm_transition   = var.warm_transition
+    cold_transition   = var.cold_transition
+    delete_transition = var.delete_transition
+    index_pattern     = var.index_pattern
+  }
 }

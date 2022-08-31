@@ -7,3 +7,8 @@ output "snapshot_role_arn" {
   description = "Snapshot role ARN"
   value       = length(aws_iam_role.snapshot_role) > 0 ? aws_iam_role.snapshot_role[0].arn : null
 }
+
+output "ism_policy" {
+  description = "paste this in Kibana, waiting for https://github.com/hashicorp/terraform-provider-aws/issues/25527"
+  value       = data.template_file.ism_policy
+}
