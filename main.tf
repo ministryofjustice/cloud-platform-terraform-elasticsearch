@@ -6,7 +6,7 @@ data "aws_vpc" "selected" {
 }
 
 data "aws_eks_cluster" "eks_cluster" {
-  name = var.cluster_name
+  name = var.eks_cluster_name
 }
 
 data "aws_subnet_ids" "private" {
@@ -30,7 +30,7 @@ locals {
   identifier                   = "cloud-platform-${random_id.id.hex}"
   elasticsearch_domain_name    = "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}"
   aws_es_irsa_sa_name          = var.aws_es_irsa_sa_name
-  eks_cluster_oidc_issuer_url  = data.aws_eks_cluster.live.identity[0].oidc[0].issuer
+  eks_cluster_oidc_issuer_url  = data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
   es_domain_policy_identifiers = module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn
 }
 

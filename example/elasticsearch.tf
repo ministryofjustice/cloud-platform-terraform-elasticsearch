@@ -8,7 +8,8 @@
 module "example_team_es" {
   # source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=4.0.0"
   source                 = "../"
-  cluster_name           = var.cluster_name
+  eks_cluster_name       = var.eks_cluster_name
+  vpc_name               = var.vpc_name
   team_name              = var.team_name
   business-unit          = var.business_unit
   application            = var.application
@@ -34,7 +35,8 @@ module "example_team_es" {
 module "example_cold_storage" {
   # source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=4.0.0"
   source                 = "../"
-  cluster_name           = var.cluster_name
+  eks_cluster_name       = var.eks_cluster_name
+  vpc_name               = var.vpc_name
   team_name              = var.team_name
   business-unit          = var.business_unit
   application            = var.application
