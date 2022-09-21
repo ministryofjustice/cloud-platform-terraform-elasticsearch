@@ -1,12 +1,12 @@
 data "aws_vpc" "selected" {
   filter {
     name   = "tag:Name"
-    values = [var.cluster_name == "live" ? "live-1" : var.cluster_name]
+    values = [var.vpc_name == "live" ? "live-1" : var.vpc_name]
   }
 }
 
-data "aws_eks_cluster" "live" {
-  name = "live"
+data "aws_eks_cluster" "eks_cluster" {
+  name = var.cluster_name
 }
 
 data "aws_subnet_ids" "private" {
