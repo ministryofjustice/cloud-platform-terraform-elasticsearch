@@ -12,8 +12,3 @@ output "ism_policy" {
   description = "paste this in Kibana, waiting for https://github.com/hashicorp/terraform-provider-aws/issues/25527"
   value       = data.template_file.ism_policy
 }
-
-output "aws_endpoint" {
-  description = "URL for aws-es-proxy service"
-  value       = aws_elasticsearch_domain.elasticsearch_domain.endpoint
-}
