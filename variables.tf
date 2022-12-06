@@ -1,5 +1,10 @@
-variable "cluster_name" {
-  description = "The name of the cluster (eg.: cloud-platform-live-0)"
+variable "eks_cluster_name" {
+  description = "The name of the eks cluster to retrieve the OIDC information"
+  type        = string
+}
+
+variable "vpc_name" {
+  description = "The name of the vpc (eg.: live-1)"
   type        = string
 }
 

@@ -55,7 +55,7 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | [kubernetes_service_account.irsa_elastic_search_sa](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_account) | resource |
 | [random_id.id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [time_sleep.irsa_role_arn_creation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
-| [aws_eks_cluster.live](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster) | data source |
+| [aws_eks_cluster.eks_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster) | data source |
 | [aws_iam_policy_document.elasticsearch_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.elasticsearch_role_snapshot_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.empty](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -79,7 +79,6 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | <a name="input_aws_es_irsa_sa_name"></a> [aws\_es\_irsa\_sa\_name](#input\_aws\_es\_irsa\_sa\_name) | Name used by aws-es irsa service account | `string` | `"aws-es-irsa-sa"` | no |
 | <a name="input_aws_es_proxy_service_name"></a> [aws\_es\_proxy\_service\_name](#input\_aws\_es\_proxy\_service\_name) | Name used by aws-es-proxy service | `string` | `"aws-es-proxy-service"` | no |
 | <a name="input_business-unit"></a> [business-unit](#input\_business-unit) | Area of the MOJ responsible for the service | `string` | `"mojdigital"` | no |
-| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name of the cluster (eg.: cloud-platform-live-0) | `string` | n/a | yes |
 | <a name="input_cold_enabled"></a> [cold\_enabled](#input\_cold\_enabled) | Whether to enable cold storage | `bool` | `false` | no |
 | <a name="input_cold_transition"></a> [cold\_transition](#input\_cold\_transition) | Time until transition to cold storage | `string` | `"30d"` | no |
 | <a name="input_dedicated_master_count"></a> [dedicated\_master\_count](#input\_dedicated\_master\_count) | Number of dedicated master nodes in the cluster | `number` | `3` | no |
@@ -89,6 +88,7 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | <a name="input_ebs_iops"></a> [ebs\_iops](#input\_ebs\_iops) | The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type | `number` | `3000` | no |
 | <a name="input_ebs_volume_size"></a> [ebs\_volume\_size](#input\_ebs\_volume\_size) | Optionally use EBS volumes for data storage by specifying volume size in GB | `number` | `10` | no |
 | <a name="input_ebs_volume_type"></a> [ebs\_volume\_type](#input\_ebs\_volume\_type) | Storage type of EBS volumes | `string` | `"gp3"` | no |
+| <a name="input_eks_cluster_name"></a> [eks\_cluster\_name](#input\_eks\_cluster\_name) | The name of the eks cluster to retrieve the OIDC information | `string` | n/a | yes |
 | <a name="input_elasticsearch-domain"></a> [elasticsearch-domain](#input\_elasticsearch-domain) | The name of the domain you want to use. The actual domain name will use the format <team\_name>-<environment-name>-<elasticsearch-domain> | `string` | n/a | yes |
 | <a name="input_elasticsearch_version"></a> [elasticsearch\_version](#input\_elasticsearch\_version) | Version of Elasticsearch to deploy | `string` | `"7.10"` | no |
 | <a name="input_encryption_at_rest"></a> [encryption\_at\_rest](#input\_encryption\_at\_rest) | Whether to encrypt the domain at rest | `bool` | `false` | no |
@@ -110,6 +110,7 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | <a name="input_snapshot_enabled"></a> [snapshot\_enabled](#input\_snapshot\_enabled) | Set to false to prevent the module from creating snapshot resources | `string` | `"true"` | no |
 | <a name="input_team_name"></a> [team\_name](#input\_team\_name) | The name of your development team | `string` | n/a | yes |
 | <a name="input_timestamp_field"></a> [timestamp\_field](#input\_timestamp\_field) | Field Kibana identifies as Time field, when creating the index pattern | `string` | `"last_updated"` | no |
+| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | The name of the vpc (eg.: live-1) | `string` | n/a | yes |
 | <a name="input_warm_count"></a> [warm\_count](#input\_warm\_count) | Number of warm data nodes in the cluster | `number` | `2` | no |
 | <a name="input_warm_enabled"></a> [warm\_enabled](#input\_warm\_enabled) | Whether to enable warm storage | `bool` | `false` | no |
 | <a name="input_warm_transition"></a> [warm\_transition](#input\_warm\_transition) | Time until transition to warm storage | `string` | `"7d"` | no |

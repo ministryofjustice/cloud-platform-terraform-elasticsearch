@@ -3,8 +3,18 @@
  * the next 3 variables are automatically supplied by the pipeline.
  *
 */
-variable "cluster_name" {
+variable "eks_cluster_name" {
+  description = "The name of the cluster (eg.: cloud-platform-live-0)"
+  type        = string
+  default     = "example_name"
 }
+
+variable "vpc_name" {
+  description = "The name of the vpc (eg.: live-1)"
+  type        = string
+  default     = "example_name"
+}
+
 variable "kubernetes_cluster" {
 }
 variable "github_token" {
