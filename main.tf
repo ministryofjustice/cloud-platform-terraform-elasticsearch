@@ -9,16 +9,18 @@ data "aws_eks_cluster" "eks_cluster" {
   name = var.eks_cluster_name
 }
 
-data "aws_subnet_ids" "private" {
-  vpc_id = data.aws_vpc.selected.id
+data "aws_subnets" "private" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.selected.id]
+  }
 
   tags = {
     SubnetType = "Private"
   }
 }
-
 data "aws_subnet" "private" {
-  for_each = data.aws_subnet_ids.private.ids
+  for_each = toset(data.aws_subnets.private.ids)
   id       = each.value
 }
 
@@ -60,7 +62,7 @@ data "aws_iam_policy_document" "empty" {
 
 # Common aws_iam_policy_document used by both assume and irsa
 data "aws_iam_policy_document" "elasticsearch_role_policy" {
-  source_json = var.s3_manual_snapshot_repository != "" ? data.aws_iam_policy_document.elasticsearch_role_snapshot_policy[0].json : data.aws_iam_policy_document.empty.json
+  source_policy_documents = var.s3_manual_snapshot_repository != "" ? [data.aws_iam_policy_document.elasticsearch_role_snapshot_policy[0].json] : [data.aws_iam_policy_document.empty.json]
 
   statement {
     actions = [
@@ -172,7 +174,8 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
   domain_name           = local.elasticsearch_domain_name
   elasticsearch_version = var.elasticsearch_version
   advanced_options = merge({
-    "rest.action.multi.allow_explicit_index" = "true"
+    "rest.action.multi.allow_explicit_index" = "true",
+    "override_main_response_version"         = "false"
   }, var.advanced_options)
 
   encrypt_at_rest {
@@ -197,9 +200,9 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
     dedicated_master_enabled = var.dedicated_master_enabled
     dedicated_master_count   = var.dedicated_master_count
     dedicated_master_type    = var.dedicated_master_type
-    warm_count               = var.warm_count
+    warm_count               = var.warm_enabled == true ? var.warm_count : null
     warm_enabled             = var.warm_enabled
-    warm_type                = var.warm_type
+    warm_type                = var.warm_enabled == true ? var.warm_type : null
     zone_awareness_enabled   = var.zone_awareness_enabled
     zone_awareness_config {
       availability_zone_count = var.availability_zone_count
@@ -211,7 +214,7 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
 
   vpc_options {
     security_group_ids = [aws_security_group.security_group.id]
-    subnet_ids         = data.aws_subnet_ids.private.ids
+    subnet_ids         = data.aws_subnets.private.ids
   }
 
   snapshot_options {
