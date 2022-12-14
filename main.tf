@@ -174,8 +174,7 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
   domain_name           = local.elasticsearch_domain_name
   elasticsearch_version = var.elasticsearch_version
   advanced_options = merge({
-    "rest.action.multi.allow_explicit_index" = "true",
-    "override_main_response_version"         = "false"
+    "rest.action.multi.allow_explicit_index" = "true"
   }, var.advanced_options)
 
   encrypt_at_rest {
