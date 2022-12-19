@@ -259,3 +259,9 @@ variable "s3_manual_snapshot_repository" {
   default     = ""
   description = "ARN of S3 bucket to use for manual snapshot repository"
 }
+
+variable "domain_endpoint_enforce_https" {
+  type        = bool
+  default     = false
+  description = "Enforce HTTPS when connecting to the cluster's domain endpoint"
+}

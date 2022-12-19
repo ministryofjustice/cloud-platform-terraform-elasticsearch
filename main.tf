@@ -211,6 +211,11 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
     }
   }
 
+  domain_endpoint_options {
+    enforce_https       = var.domain_endpoint_enforce_https
+    tls_security_policy = var.domain_endpoint_enforce_https == true ? "Policy-Min-TLS-1-2-2019-07" : null
+  }
+
   vpc_options {
     security_group_ids = [aws_security_group.security_group.id]
     subnet_ids         = data.aws_subnets.private.ids
