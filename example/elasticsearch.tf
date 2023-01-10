@@ -22,6 +22,7 @@ module "example_team_es" {
 
   # change the elasticsearch version as you see fit.
   elasticsearch_version = "7.10"
+  domain_endpoint_enforce_https   = true
 
   # This will enable creation of manual snapshot in s3 repo, provide the "s3 bucket arn" to create snapshot in s3.
   # s3_manual_snapshot_repository = "s3-bucket-arn"
