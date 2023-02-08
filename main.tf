@@ -171,7 +171,7 @@ resource "aws_kms_alias" "alias" {
 }
 
 resource "aws_elasticsearch_domain" "elasticsearch_domain" {
-  domain_name           = length(local.elasticsearch_domain_name) > 28  
+  domain_name           = local.elasticsearch_domain_name
   elasticsearch_version = var.elasticsearch_version
   advanced_options = merge({
     "rest.action.multi.allow_explicit_index" = "true"
