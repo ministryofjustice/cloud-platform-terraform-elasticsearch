@@ -170,9 +170,9 @@ resource "aws_kms_alias" "alias" {
   target_key_id = aws_kms_key.kms[0].key_id
 }
 
-resource "aws_elasticsearch_domain" "elasticsearch_domain" {
+resource "aws_opensearch_domain" "opensearch_domain" {
   domain_name           = local.elasticsearch_domain_name
-  elasticsearch_version = var.elasticsearch_version
+  engine_version        = var.engine_version
   advanced_options = merge({
     "rest.action.multi.allow_explicit_index" = "true"
   }, var.advanced_options)
@@ -226,21 +226,30 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
   }
 
   log_publishing_options {
-    enabled                  = var.log_publishing_index_enabled
-    log_type                 = "INDEX_SLOW_LOGS"
-    cloudwatch_log_group_arn = var.log_publishing_index_cloudwatch_log_group_arn
+    for_each = var.log_publishing_index_enabled == "true" ? [1] : []
+    content {
+      enabled                  = var.log_publishing_index_enabled
+      log_type                 = "INDEX_SLOW_LOGS"
+      cloudwatch_log_group_arn = var.log_publishing_index_cloudwatch_log_group_arn
+    }
   }
 
   log_publishing_options {
-    enabled                  = var.log_publishing_search_enabled
-    log_type                 = "SEARCH_SLOW_LOGS"
-    cloudwatch_log_group_arn = var.log_publishing_search_cloudwatch_log_group_arn
+    for_each = var.log_publishing_search_enabled == "true" ? [1] : []
+    content {
+      enabled                  = var.log_publishing_search_enabled
+      log_type                 = "SEARCH_SLOW_LOGS"
+      cloudwatch_log_group_arn = var.log_publishing_search_cloudwatch_log_group_arn
+    }
   }
 
   log_publishing_options {
-    enabled                  = var.log_publishing_application_enabled
-    log_type                 = "ES_APPLICATION_LOGS"
-    cloudwatch_log_group_arn = var.log_publishing_application_cloudwatch_log_group_arn
+    for_each = var.log_publishing_application_enabled == "true" ? [1] : []
+    content {
+      enabled                  = var.log_publishing_application_enabled
+      log_type                 = "ES_APPLICATION_LOGS"
+      cloudwatch_log_group_arn = var.log_publishing_application_cloudwatch_log_group_arn
+    }
   }
 
   tags = {
@@ -267,7 +276,7 @@ data "aws_iam_policy_document" "iam_role_policy" {
     }
 
     resources = [
-      "${aws_elasticsearch_domain.elasticsearch_domain.arn}/*",
+      "${aws_opensearch_domain.opensearch_domain.arn}/*",
     ]
   }
 }

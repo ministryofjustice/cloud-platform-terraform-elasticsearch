@@ -1,9 +1,9 @@
-# cloud-platform-terraform-elasticsearch
-Terraform module to add a AWS Elasticsearch and Kibana resource in the Cloud Platform
+# cloud-platform-terraform-opensearch
+Terraform module to add a AWS Opensearch and Kibana resource in the Cloud Platform. Fork of cloud-platform-terraform-elasticsearch
 
-[![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-terraform-elasticsearch/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-terraform-elasticsearch/releases)
+[![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-terraform-opensearch/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-terraform-opensearch/releases)
 
-Terraform module that will create an AWS Elasticsearch cluster within a VPC and a relevant IAM role that will provide access to the Elasticsearch.
+Terraform module that will create an AWS Opensearch cluster within a VPC and a relevant IAM role that will provide access to Opensearch.
 
 The resources created will have a randomised name of the format `cloud-platform-7a5c4a2a7e2134a`. This ensures that the resources created is globally unique.
 
@@ -42,7 +42,7 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 
 | Name | Type |
 |------|------|
-| [aws_elasticsearch_domain.elasticsearch_domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticsearch_domain) | resource |
+| [aws_opensearch_domain.opensearch_domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearch_domain) | resource |
 | [aws_elasticsearch_domain_policy.domain_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticsearch_domain_policy) | resource |
 | [aws_iam_policy.irsa_elastic_search](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.snapshot_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
