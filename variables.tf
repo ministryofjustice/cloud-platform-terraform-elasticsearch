@@ -23,8 +23,8 @@ variable "application" {
   type        = string
 }
 
-variable "elasticsearch-domain" {
-  description = "The name of the domain you want to use. The actual domain name will use the format <team_name>-<environment-name>-<elasticsearch-domain>"
+variable "opensearch-domain" {
+  description = "The name of the domain you want to use. The actual domain name will use the format <team_name>-<environment-name>-<opensearch-domain>"
   type        = string
 }
 
