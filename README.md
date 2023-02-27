@@ -91,7 +91,7 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | <a name="input_ebs_volume_type"></a> [ebs\_volume\_type](#input\_ebs\_volume\_type) | Storage type of EBS volumes | `string` | `"gp3"` | no |
 | <a name="input_eks_cluster_name"></a> [eks\_cluster\_name](#input\_eks\_cluster\_name) | The name of the eks cluster to retrieve the OIDC information | `string` | n/a | yes |
 | <a name="input_elasticsearch-domain"></a> [elasticsearch-domain](#input\_elasticsearch-domain) | The name of the domain you want to use. The actual domain name will use the format <team\_name>-<environment-name>-<elasticsearch-domain> | `string` | n/a | yes |
-| <a name="input_engine_version"></a> [opensearch\_version](#input\_opensearch\_version) | Version of Opensearch to deploy | `string` | `"OpenSearch_1.1"` | no |
+| <a name="input_engine_version"></a> [engine\_version](#input\_engine\_version) | Version of Opensearch to deploy | `string` | `"OpenSearch_1.1"` | no |
 | <a name="input_encryption_at_rest"></a> [encryption\_at\_rest](#input\_encryption\_at\_rest) | Whether to encrypt the domain at rest | `bool` | `false` | no |
 | <a name="input_environment-name"></a> [environment-name](#input\_environment-name) | The type of environment you're deploying to. | `string` | n/a | yes |
 | <a name="input_index_pattern"></a> [index\_pattern](#input\_index\_pattern) | Pattern created in Kibana, policy will apply to matching new indices | `string` | `"test_data*"` | no |
