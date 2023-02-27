@@ -90,7 +90,7 @@ data "aws_iam_policy_document" "elasticsearch_role_snapshot_policy" {
 resource "aws_iam_role" "snapshot_role" {
   count              = var.snapshot_enabled == "true" && var.s3_manual_snapshot_repository != "" ? 1 : 0
   name               = "${local.identifier}-snapshots"
-  description        = "IAM Role for Opwnsearch service to assume for creating and restoring manual snapshots with s3"
+  description        = "IAM Role for Opensearch service to assume for creating and restoring manual snapshots with s3"
   assume_role_policy = join("", data.aws_iam_policy_document.snapshot_role.*.json)
 
   tags = {
@@ -291,7 +291,7 @@ resource "time_sleep" "irsa_role_arn_creation" {
 }
 
 
-resource "aws_elasticsearch_domain_policy" "domain_policy" {
+resource "aws_opensearch_domain_policy" "domain_policy" {
   depends_on      = [time_sleep.irsa_role_arn_creation]
   domain_name     = local.opensearch_domain_name
   access_policies = join("", data.aws_iam_policy_document.iam_role_policy.*.json)
