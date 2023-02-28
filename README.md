@@ -1,4 +1,6 @@
-# cloud-platform-terraform-opensearch
+# cloud-platform-terraform-opensearch (In Development)
+This module is currently being developed.
+
 Terraform module to add a AWS Opensearch and Kibana resource in the Cloud Platform. Fork of cloud-platform-terraform-elasticsearch
 
 [![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-terraform-opensearch/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-terraform-opensearch/releases)
