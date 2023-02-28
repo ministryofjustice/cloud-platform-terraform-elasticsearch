@@ -225,7 +225,7 @@ resource "aws_opensearch_domain" "opensearch_domain" {
     automated_snapshot_start_hour = var.automated_snapshot_start_hour
   }
 
-  log_publishing_options {
+  dynamic "log_publishing_options" {
     for_each = var.log_publishing_index_enabled == "true" ? [1] : []
     content {
       enabled                  = var.log_publishing_index_enabled
@@ -234,7 +234,7 @@ resource "aws_opensearch_domain" "opensearch_domain" {
     }
   }
 
-  log_publishing_options {
+  dynamic "log_publishing_options" {
     for_each = var.log_publishing_search_enabled == "true" ? [1] : []
     content {
       enabled                  = var.log_publishing_search_enabled
@@ -243,7 +243,7 @@ resource "aws_opensearch_domain" "opensearch_domain" {
     }
   }
 
-  log_publishing_options {
+  dynamic "log_publishing_options" {
     for_each = var.log_publishing_application_enabled == "true" ? [1] : []
     content {
       enabled                  = var.log_publishing_application_enabled
