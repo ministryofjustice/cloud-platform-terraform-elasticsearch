@@ -7,7 +7,7 @@ Terraform module to add a AWS Opensearch and Kibana resource in the Cloud Platfo
 
 Terraform module that will create an AWS Opensearch cluster within a VPC and a relevant IAM role that will provide access to Opensearch.
 
-The resources created will have a randomised name of the format `cloud-platform-7a5c4a2a7e2134a`. This ensures that the resources created is globally unique.
+The resources created will have a randomised name of the format `cloud-platform-7a5c4a2a7e2134b`. This ensures that the resources created is globally unique.
 
 ## Usage
 
