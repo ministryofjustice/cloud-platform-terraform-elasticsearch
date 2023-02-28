@@ -43,7 +43,7 @@ resource "kubernetes_deployment" "aws-es-proxy" {
 
           args = ["-endpoint", format(
             "https://%s",
-            aws_elasticsearch_domain.elasticsearch_domain.endpoint,
+            aws_opensearch_domain.opensearch_domain.endpoint,
           ), "-listen", ":9200"]
         }
       }
