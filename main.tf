@@ -30,7 +30,7 @@ resource "random_id" "id" {
 
 locals {
   identifier                   = "cloud-platform-${random_id.id.hex}"
-  elasticsearch_domain_name    = length("${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}") <= 28 ? "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}" : var.elasticsearch-domain
+  opensearch_domain_name    = length("${var.team_name}-${var.environment-name}-${var.opensearch-domain}") <= 28 ? "${var.team_name}-${var.environment-name}-${var.opensearch-domain}" : var.opensearch-domain
   aws_es_irsa_sa_name          = var.aws_es_irsa_sa_name
   eks_cluster_oidc_issuer_url  = data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
   es_domain_policy_identifiers = module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn
@@ -70,7 +70,7 @@ data "aws_iam_policy_document" "elasticsearch_role_policy" {
       "es:ESHttp*",
     ]
 
-    resources = ["${aws_elasticsearch_domain.elasticsearch_domain.arn}/*"]
+    resources = ["${aws_opensearch_domain.opensearch_domain.arn}/*"]
   }
 }
 
@@ -90,7 +90,7 @@ data "aws_iam_policy_document" "elasticsearch_role_snapshot_policy" {
 resource "aws_iam_role" "snapshot_role" {
   count              = var.snapshot_enabled == "true" && var.s3_manual_snapshot_repository != "" ? 1 : 0
   name               = "${local.identifier}-snapshots"
-  description        = "IAM Role for Elasticsearch service to assume for creating and restoring manual snapshots with s3"
+  description        = "IAM Role for Opensearch service to assume for creating and restoring manual snapshots with s3"
   assume_role_policy = join("", data.aws_iam_policy_document.snapshot_role.*.json)
 
   tags = {
@@ -170,9 +170,9 @@ resource "aws_kms_alias" "alias" {
   target_key_id = aws_kms_key.kms[0].key_id
 }
 
-resource "aws_elasticsearch_domain" "elasticsearch_domain" {
-  domain_name           = local.elasticsearch_domain_name
-  elasticsearch_version = var.elasticsearch_version
+resource "aws_opensearch_domain" "opensearch_domain" {
+  domain_name           = local.opensearch_domain_name
+  engine_version        = var.engine_version
   advanced_options = merge({
     "rest.action.multi.allow_explicit_index" = "true"
   }, var.advanced_options)
@@ -226,21 +226,30 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
   }
 
   log_publishing_options {
-    enabled                  = var.log_publishing_index_enabled
-    log_type                 = "INDEX_SLOW_LOGS"
-    cloudwatch_log_group_arn = var.log_publishing_index_cloudwatch_log_group_arn
+    for_each = var.log_publishing_index_enabled == "true" ? [1] : []
+    content {
+      enabled                  = var.log_publishing_index_enabled
+      log_type                 = "INDEX_SLOW_LOGS"
+      cloudwatch_log_group_arn = var.log_publishing_index_cloudwatch_log_group_arn
+    }
   }
 
   log_publishing_options {
-    enabled                  = var.log_publishing_search_enabled
-    log_type                 = "SEARCH_SLOW_LOGS"
-    cloudwatch_log_group_arn = var.log_publishing_search_cloudwatch_log_group_arn
+    for_each = var.log_publishing_search_enabled == "true" ? [1] : []
+    content {
+      enabled                  = var.log_publishing_search_enabled
+      log_type                 = "SEARCH_SLOW_LOGS"
+      cloudwatch_log_group_arn = var.log_publishing_search_cloudwatch_log_group_arn
+    }
   }
 
   log_publishing_options {
-    enabled                  = var.log_publishing_application_enabled
-    log_type                 = "ES_APPLICATION_LOGS"
-    cloudwatch_log_group_arn = var.log_publishing_application_cloudwatch_log_group_arn
+    for_each = var.log_publishing_application_enabled == "true" ? [1] : []
+    content {
+      enabled                  = var.log_publishing_application_enabled
+      log_type                 = "ES_APPLICATION_LOGS"
+      cloudwatch_log_group_arn = var.log_publishing_application_cloudwatch_log_group_arn
+    }
   }
 
   tags = {
@@ -267,7 +276,7 @@ data "aws_iam_policy_document" "iam_role_policy" {
     }
 
     resources = [
-      "${aws_elasticsearch_domain.elasticsearch_domain.arn}/*",
+      "${aws_opensearch_domain.opensearch_domain.arn}/*",
     ]
   }
 }
@@ -282,9 +291,9 @@ resource "time_sleep" "irsa_role_arn_creation" {
 }
 
 
-resource "aws_elasticsearch_domain_policy" "domain_policy" {
+resource "aws_opensearch_domain_policy" "domain_policy" {
   depends_on      = [time_sleep.irsa_role_arn_creation]
-  domain_name     = local.elasticsearch_domain_name
+  domain_name     = local.opensearch_domain_name
   access_policies = join("", data.aws_iam_policy_document.iam_role_policy.*.json)
 }
 

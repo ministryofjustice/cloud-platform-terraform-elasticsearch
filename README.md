@@ -1,9 +1,11 @@
-# cloud-platform-terraform-elasticsearch
-Terraform module to add a AWS Elasticsearch and Kibana resource in the Cloud Platform
+# cloud-platform-terraform-opensearch (In Development)
+This module is currently being developed.
 
-[![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-terraform-elasticsearch/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-terraform-elasticsearch/releases)
+Terraform module to add a AWS Opensearch and Kibana resource in the Cloud Platform. Fork of cloud-platform-terraform-elasticsearch
 
-Terraform module that will create an AWS Elasticsearch cluster within a VPC and a relevant IAM role that will provide access to the Elasticsearch.
+[![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-terraform-opensearch/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-terraform-opensearch/releases)
+
+Terraform module that will create an AWS Opensearch cluster within a VPC and a relevant IAM role that will provide access to Opensearch.
 
 The resources created will have a randomised name of the format `cloud-platform-7a5c4a2a7e2134a`. This ensures that the resources created is globally unique.
 
@@ -42,8 +44,8 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 
 | Name | Type |
 |------|------|
-| [aws_elasticsearch_domain.elasticsearch_domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticsearch_domain) | resource |
-| [aws_elasticsearch_domain_policy.domain_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticsearch_domain_policy) | resource |
+| [aws_opensearch_domain.opensearch_domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearch_domain) | resource |
+| [aws_opensearch_domain_policy.domain_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticsearch_domain_policy) | resource |
 | [aws_iam_policy.irsa_elastic_search](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.snapshot_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy.snapshot_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
@@ -91,7 +93,7 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | <a name="input_ebs_volume_type"></a> [ebs\_volume\_type](#input\_ebs\_volume\_type) | Storage type of EBS volumes | `string` | `"gp3"` | no |
 | <a name="input_eks_cluster_name"></a> [eks\_cluster\_name](#input\_eks\_cluster\_name) | The name of the eks cluster to retrieve the OIDC information | `string` | n/a | yes |
 | <a name="input_elasticsearch-domain"></a> [elasticsearch-domain](#input\_elasticsearch-domain) | The name of the domain you want to use. The actual domain name will use the format <team\_name>-<environment-name>-<elasticsearch-domain> | `string` | n/a | yes |
-| <a name="input_elasticsearch_version"></a> [elasticsearch\_version](#input\_elasticsearch\_version) | Version of Elasticsearch to deploy | `string` | `"7.10"` | no |
+| <a name="input_engine_version"></a> [engine\_version](#input\_engine\_version) | Version of Opensearch to deploy | `string` | `"OpenSearch_1.1"` | no |
 | <a name="input_encryption_at_rest"></a> [encryption\_at\_rest](#input\_encryption\_at\_rest) | Whether to encrypt the domain at rest | `bool` | `false` | no |
 | <a name="input_environment-name"></a> [environment-name](#input\_environment-name) | The type of environment you're deploying to. | `string` | n/a | yes |
 | <a name="input_index_pattern"></a> [index\_pattern](#input\_index\_pattern) | Pattern created in Kibana, policy will apply to matching new indices | `string` | `"test_data*"` | no |

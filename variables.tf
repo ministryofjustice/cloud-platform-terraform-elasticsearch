@@ -23,8 +23,8 @@ variable "application" {
   type        = string
 }
 
-variable "elasticsearch-domain" {
-  description = "The name of the domain you want to use. The actual domain name will use the format <team_name>-<environment-name>-<elasticsearch-domain>"
+variable "opensearch-domain" {
+  description = "The name of the domain you want to use. The actual domain name will use the format <team_name>-<environment-name>-<opensearch-domain>"
   type        = string
 }
 
@@ -56,16 +56,16 @@ variable "snapshot_enabled" {
   description = "Set to false to prevent the module from creating snapshot resources"
 }
 
-variable "elasticsearch_version" {
+variable "engine_version" {
   type        = string
-  default     = "7.10"
-  description = "Version of Elasticsearch to deploy"
+  default     = "OpenSearch_1.1"
+  description = "Version of Opensearch to deploy"
 }
 
 variable "instance_type" {
   type        = string
-  default     = "t3.medium.elasticsearch"
-  description = "Elasticsearch instance type for data nodes in the cluster"
+  default     = "t3.medium.search"
+  description = "Opensearch instance type for data nodes in the cluster"
 }
 
 variable "instance_count" {
@@ -82,8 +82,8 @@ variable "warm_count" {
 
 variable "warm_type" {
   type        = string
-  default     = "ultrawarm1.medium.elasticsearch"
-  description = "Elasticsearch instance type for warm data nodes in the cluster"
+  default     = "ultrawarm1.medium.search"
+  description = "Opensearch instance type for warm data nodes in the cluster"
 }
 
 variable "warm_enabled" {
@@ -214,7 +214,7 @@ variable "dedicated_master_count" {
 
 variable "dedicated_master_type" {
   type        = string
-  default     = "t3.small.elasticsearch"
+  default     = "t3.small.search"
   description = "Instance type of the dedicated master nodes in the cluster"
 }
 

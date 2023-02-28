@@ -12,7 +12,7 @@ module "iam_assumable_role_irsa_elastic_search" {
 
 resource "aws_iam_policy" "irsa_elastic_search" {
   name_prefix = local.identifier
-  description = "EKS CloudWatch Exporter policy for es ${local.elasticsearch_domain_name}"
+  description = "EKS CloudWatch Exporter policy for es ${local.opensearch_domain_name}"
   policy      = data.aws_iam_policy_document.elasticsearch_role_policy.json
 }
 
