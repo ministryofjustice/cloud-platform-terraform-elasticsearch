@@ -8,12 +8,16 @@ module "iam_assumable_role_irsa_elastic_search" {
   provider_url                  = local.eks_cluster_oidc_issuer_url
   role_policy_arns              = [aws_iam_policy.irsa_elastic_search.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.namespace}:${var.aws_es_irsa_sa_name}"]
+
+  tags = local.default_tags
 }
 
 resource "aws_iam_policy" "irsa_elastic_search" {
   name_prefix = local.identifier
   description = "EKS CloudWatch Exporter policy for es ${local.elasticsearch_domain_name}"
   policy      = data.aws_iam_policy_document.elasticsearch_role_policy.json
+
+  tags = local.default_tags
 }
 
 resource "kubernetes_service_account" "irsa_elastic_search_sa" {

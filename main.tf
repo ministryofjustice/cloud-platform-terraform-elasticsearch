@@ -1,3 +1,18 @@
+locals {
+  default_tags = {
+    # Mandatory
+    business-unit = var.business-unit
+    application   = var.application
+    is-production = var.is-production
+    owner         = var.team_name
+    namespace     = var.namespace # for billing and identification purposes
+
+    # Optional
+    environment-name       = var.environment-name
+    infrastructure-support = var.infrastructure-support
+  }
+}
+
 data "aws_vpc" "selected" {
   filter {
     name   = "tag:Name"
@@ -19,6 +34,7 @@ data "aws_subnets" "private" {
     SubnetType = "Private"
   }
 }
+
 data "aws_subnet" "private" {
   for_each = toset(data.aws_subnets.private.ids)
   id       = each.value
@@ -35,7 +51,6 @@ locals {
   eks_cluster_oidc_issuer_url  = data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
   es_domain_policy_identifiers = module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn
 }
-
 
 resource "aws_security_group" "security_group" {
   name        = local.identifier
@@ -55,6 +70,8 @@ resource "aws_security_group" "security_group" {
     protocol    = "-1"
     cidr_blocks = [for s in data.aws_subnet.private : s.cidr_block]
   }
+
+  tags = local.default_tags
 }
 
 data "aws_iam_policy_document" "empty" {
@@ -93,14 +110,7 @@ resource "aws_iam_role" "snapshot_role" {
   description        = "IAM Role for Elasticsearch service to assume for creating and restoring manual snapshots with s3"
   assume_role_policy = join("", data.aws_iam_policy_document.snapshot_role.*.json)
 
-  tags = {
-    business-unit          = var.business-unit
-    application            = var.application
-    is-production          = var.is-production
-    environment-name       = var.environment-name
-    owner                  = var.team_name
-    infrastructure-support = var.infrastructure-support
-  }
+  tags = local.default_tags
 }
 
 data "aws_iam_policy_document" "snapshot_role" {
@@ -153,15 +163,7 @@ resource "aws_kms_key" "kms" {
   count       = var.encryption_at_rest ? 1 : 0
   description = local.identifier
 
-  tags = {
-    business-unit          = var.business-unit
-    application            = var.application
-    is-production          = var.is-production
-    environment-name       = var.environment-name
-    owner                  = var.team_name
-    infrastructure-support = var.infrastructure-support
-    namespace              = var.namespace
-  }
+  tags = local.default_tags
 }
 
 resource "aws_kms_alias" "alias" {
@@ -243,15 +245,7 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
     cloudwatch_log_group_arn = var.log_publishing_application_cloudwatch_log_group_arn
   }
 
-  tags = {
-    namespace              = var.namespace
-    business-unit          = var.business-unit
-    application            = var.application
-    is-production          = var.is-production
-    environment-name       = var.environment-name
-    owner                  = var.team_name
-    infrastructure-support = var.infrastructure-support
-  }
+  tags = local.default_tags
 }
 
 # Domain access policy to allow or deny access by IAM role ARN

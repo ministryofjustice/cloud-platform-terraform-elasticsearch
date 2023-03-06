@@ -30,13 +30,11 @@ variable "elasticsearch-domain" {
 
 variable "is-production" {
   description = "Whether the ElasticSearch cluster is for production use."
-  default     = "false"
   type        = string
 }
 
 variable "business-unit" {
   description = "Area of the MOJ responsible for the service"
-  default     = "mojdigital"
   type        = string
 }
 
