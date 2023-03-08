@@ -78,7 +78,7 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | <a name="input_aws-es-proxy-replica-count"></a> [aws-es-proxy-replica-count](#input\_aws-es-proxy-replica-count) | Number of replicas for the aws-es-proxy deployment | `number` | `1` | no |
 | <a name="input_aws_es_irsa_sa_name"></a> [aws\_es\_irsa\_sa\_name](#input\_aws\_es\_irsa\_sa\_name) | Name used by aws-es irsa service account | `string` | `"aws-es-irsa-sa"` | no |
 | <a name="input_aws_es_proxy_service_name"></a> [aws\_es\_proxy\_service\_name](#input\_aws\_es\_proxy\_service\_name) | Name used by aws-es-proxy service | `string` | `"aws-es-proxy-service"` | no |
-| <a name="input_business-unit"></a> [business-unit](#input\_business-unit) | Area of the MOJ responsible for the service | `string` | `"mojdigital"` | no |
+| <a name="input_business-unit"></a> [business-unit](#input\_business-unit) | Area of the MOJ responsible for the service | `string` | n/a | yes |
 | <a name="input_cold_enabled"></a> [cold\_enabled](#input\_cold\_enabled) | Whether to enable cold storage | `bool` | `false` | no |
 | <a name="input_cold_transition"></a> [cold\_transition](#input\_cold\_transition) | Time until transition to cold storage | `string` | `"30d"` | no |
 | <a name="input_dedicated_master_count"></a> [dedicated\_master\_count](#input\_dedicated\_master\_count) | Number of dedicated master nodes in the cluster | `number` | `3` | no |
@@ -98,7 +98,7 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | <a name="input_infrastructure-support"></a> [infrastructure-support](#input\_infrastructure-support) | The team responsible for managing the infrastructure. Should be of the form <team-name> (<team-email>) | `string` | n/a | yes |
 | <a name="input_instance_count"></a> [instance\_count](#input\_instance\_count) | Total data nodes in the cluster, includes warm | `number` | `3` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Elasticsearch instance type for data nodes in the cluster | `string` | `"t3.medium.elasticsearch"` | no |
-| <a name="input_is-production"></a> [is-production](#input\_is-production) | Whether the ElasticSearch cluster is for production use. | `string` | `"false"` | no |
+| <a name="input_is-production"></a> [is-production](#input\_is-production) | Whether the ElasticSearch cluster is for production use. | `string` | n/a | yes |
 | <a name="input_log_publishing_application_cloudwatch_log_group_arn"></a> [log\_publishing\_application\_cloudwatch\_log\_group\_arn](#input\_log\_publishing\_application\_cloudwatch\_log\_group\_arn) | ARN of the CloudWatch log group to which log for ES\_APPLICATION\_LOGS needs to be published | `string` | `""` | no |
 | <a name="input_log_publishing_application_enabled"></a> [log\_publishing\_application\_enabled](#input\_log\_publishing\_application\_enabled) | Specifies whether log publishing option for ES\_APPLICATION\_LOGS is enabled or not | `string` | `"false"` | no |
 | <a name="input_log_publishing_index_cloudwatch_log_group_arn"></a> [log\_publishing\_index\_cloudwatch\_log\_group\_arn](#input\_log\_publishing\_index\_cloudwatch\_log\_group\_arn) | ARN of the CloudWatch log group to which log for INDEX\_SLOW\_LOGS needs to be published | `string` | `""` | no |
