@@ -11,7 +11,7 @@ The resources created will have a randomised name of the format `cloud-platform-
 
 For the most basic setup, see [the example](example/) folder. Also check the *Accessing* section below.
 
-<!--- BEGIN_TF_DOCS --->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -126,7 +126,7 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | <a name="output_ism_policy"></a> [ism\_policy](#output\_ism\_policy) | paste this in Kibana, waiting for https://github.com/hashicorp/terraform-provider-aws/issues/25527 |
 | <a name="output_snapshot_role_arn"></a> [snapshot\_role\_arn](#output\_snapshot\_role\_arn) | Snapshot role ARN |
 
-<!--- END_TF_DOCS --->
+<!-- END_TF_DOCS -->
 
 ### Tags
 
