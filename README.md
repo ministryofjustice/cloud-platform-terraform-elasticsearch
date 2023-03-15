@@ -125,7 +125,6 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | <a name="output_aws_es_proxy_url"></a> [aws\_es\_proxy\_url](#output\_aws\_es\_proxy\_url) | URL for aws-es-proxy service |
 | <a name="output_ism_policy"></a> [ism\_policy](#output\_ism\_policy) | paste this in Kibana, waiting for https://github.com/hashicorp/terraform-provider-aws/issues/25527 |
 | <a name="output_snapshot_role_arn"></a> [snapshot\_role\_arn](#output\_snapshot\_role\_arn) | Snapshot role ARN |
-
 <!-- END_TF_DOCS -->
 
 ### Tags
