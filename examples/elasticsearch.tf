@@ -11,11 +11,11 @@ module "example_team_es" {
   eks_cluster_name       = var.eks_cluster_name
   vpc_name               = var.vpc_name
   team_name              = var.team_name
-  business-unit          = var.business_unit
+  business_unit          = var.business_unit
   application            = var.application
-  is-production          = var.is_production
-  environment-name       = var.environment
-  infrastructure-support = var.infrastructure_support
+  is_production          = var.is_production
+  environment_name       = var.environment
+  infrastructure_support = var.infrastructure_support
   namespace              = var.namespace
 
   elasticsearch-domain = "example-es"
@@ -31,7 +31,7 @@ module "example_team_es" {
 
 /*
  * This requires larger hot nodes, dedicated masters, warm nodes, so is much more expensive; useful only for huge amounts of archivable data (eg logs).
- * 
+ *
  */
 module "example_cold_storage" {
   # source                 = "github.com/ministryofjustice/cloud-platform-terraform-elasticsearch?ref=4.0.0"
@@ -39,11 +39,11 @@ module "example_cold_storage" {
   eks_cluster_name       = var.eks_cluster_name
   vpc_name               = var.vpc_name
   team_name              = var.team_name
-  business-unit          = var.business_unit
+  business_unit          = var.business_unit
   application            = var.application
-  is-production          = var.is_production
-  environment-name       = var.environment
-  infrastructure-support = var.infrastructure_support
+  is_production          = var.is_production
+  environment_name       = var.environment
+  infrastructure_support = var.infrastructure_support
   namespace              = var.namespace
 
   elasticsearch-domain = "example-es"
