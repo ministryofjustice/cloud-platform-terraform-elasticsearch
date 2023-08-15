@@ -1,15 +1,15 @@
 locals {
   default_tags = {
     # Mandatory
-    business-unit = var.business-unit
+    business-unit = var.business_unit
     application   = var.application
-    is-production = var.is-production
+    is-production = var.is_production
     owner         = var.team_name
     namespace     = var.namespace # for billing and identification purposes
 
     # Optional
-    environment-name       = var.environment-name
-    infrastructure-support = var.infrastructure-support
+    environment-name       = var.environment_name
+    infrastructure-support = var.infrastructure_support
   }
 }
 
@@ -46,7 +46,7 @@ resource "random_id" "id" {
 
 locals {
   identifier                   = "cloud-platform-${random_id.id.hex}"
-  elasticsearch_domain_name    = length("${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}") <= 28 ? "${var.team_name}-${var.environment-name}-${var.elasticsearch-domain}" : var.elasticsearch-domain
+  elasticsearch_domain_name    = length("${var.team_name}-${var.environment_name}-${var.elasticsearch-domain}") <= 28 ? "${var.team_name}-${var.environment_name}-${var.elasticsearch-domain}" : var.elasticsearch-domain
   aws_es_irsa_sa_name          = var.aws_es_irsa_sa_name
   eks_cluster_oidc_issuer_url  = data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
   es_domain_policy_identifiers = module.iam_assumable_role_irsa_elastic_search.this_iam_role_arn
