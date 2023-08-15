@@ -17,20 +17,20 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2.5 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.27.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.12.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.0.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 2.0.0 |
-| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.7.0 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.27.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.12.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.0.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 2.0.0 |
 | <a name="provider_template"></a> [template](#provider\_template) | n/a |
-| <a name="provider_time"></a> [time](#provider\_time) | >= 0.7.0 |
+| <a name="provider_time"></a> [time](#provider\_time) | >= 0.9.0 |
 
 ## Modules
 
@@ -72,13 +72,13 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_advanced_options"></a> [advanced\_options](#input\_advanced\_options) | Key-value string pairs to specify advanced configuration options | `map(string)` | `{}` | no |
-| <a name="input_application"></a> [application](#input\_application) | The name of the application which uses this module. | `string` | n/a | yes |
+| <a name="input_application"></a> [application](#input\_application) | Application name | `string` | n/a | yes |
 | <a name="input_automated_snapshot_start_hour"></a> [automated\_snapshot\_start\_hour](#input\_automated\_snapshot\_start\_hour) | Hour at which automated snapshots are taken, in UTC | `number` | `0` | no |
 | <a name="input_availability_zone_count"></a> [availability\_zone\_count](#input\_availability\_zone\_count) | Number of Availability Zones for the domain to use. | `number` | `3` | no |
 | <a name="input_aws-es-proxy-replica-count"></a> [aws-es-proxy-replica-count](#input\_aws-es-proxy-replica-count) | Number of replicas for the aws-es-proxy deployment | `number` | `1` | no |
 | <a name="input_aws_es_irsa_sa_name"></a> [aws\_es\_irsa\_sa\_name](#input\_aws\_es\_irsa\_sa\_name) | Name used by aws-es irsa service account | `string` | `"aws-es-irsa-sa"` | no |
 | <a name="input_aws_es_proxy_service_name"></a> [aws\_es\_proxy\_service\_name](#input\_aws\_es\_proxy\_service\_name) | Name used by aws-es-proxy service | `string` | `"aws-es-proxy-service"` | no |
-| <a name="input_business-unit"></a> [business-unit](#input\_business-unit) | Area of the MOJ responsible for the service | `string` | n/a | yes |
+| <a name="input_business_unit"></a> [business\_unit](#input\_business\_unit) | Area of the MOJ responsible for the service | `string` | n/a | yes |
 | <a name="input_cold_enabled"></a> [cold\_enabled](#input\_cold\_enabled) | Whether to enable cold storage | `bool` | `false` | no |
 | <a name="input_cold_transition"></a> [cold\_transition](#input\_cold\_transition) | Time until transition to cold storage | `string` | `"30d"` | no |
 | <a name="input_dedicated_master_count"></a> [dedicated\_master\_count](#input\_dedicated\_master\_count) | Number of dedicated master nodes in the cluster | `number` | `3` | no |
@@ -93,23 +93,23 @@ For the most basic setup, see [the example](example/) folder. Also check the *Ac
 | <a name="input_elasticsearch-domain"></a> [elasticsearch-domain](#input\_elasticsearch-domain) | The name of the domain you want to use. The actual domain name will use the format <team\_name>-<environment-name>-<elasticsearch-domain> | `string` | n/a | yes |
 | <a name="input_elasticsearch_version"></a> [elasticsearch\_version](#input\_elasticsearch\_version) | Version of Elasticsearch to deploy | `string` | `"7.10"` | no |
 | <a name="input_encryption_at_rest"></a> [encryption\_at\_rest](#input\_encryption\_at\_rest) | Whether to encrypt the domain at rest | `bool` | `false` | no |
-| <a name="input_environment-name"></a> [environment-name](#input\_environment-name) | The type of environment you're deploying to. | `string` | n/a | yes |
+| <a name="input_environment_name"></a> [environment\_name](#input\_environment\_name) | Environment name | `string` | n/a | yes |
 | <a name="input_index_pattern"></a> [index\_pattern](#input\_index\_pattern) | Pattern created in Kibana, policy will apply to matching new indices | `string` | `"test_data*"` | no |
-| <a name="input_infrastructure-support"></a> [infrastructure-support](#input\_infrastructure-support) | The team responsible for managing the infrastructure. Should be of the form <team-name> (<team-email>) | `string` | n/a | yes |
+| <a name="input_infrastructure_support"></a> [infrastructure\_support](#input\_infrastructure\_support) | The team responsible for managing the infrastructure. Should be of the form <team-name> (<team-email>) | `string` | n/a | yes |
 | <a name="input_instance_count"></a> [instance\_count](#input\_instance\_count) | Total data nodes in the cluster, includes warm | `number` | `3` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Elasticsearch instance type for data nodes in the cluster | `string` | `"t3.medium.elasticsearch"` | no |
-| <a name="input_is-production"></a> [is-production](#input\_is-production) | Whether the ElasticSearch cluster is for production use. | `string` | n/a | yes |
+| <a name="input_is_production"></a> [is\_production](#input\_is\_production) | Whether this is used for production or not | `string` | n/a | yes |
 | <a name="input_log_publishing_application_cloudwatch_log_group_arn"></a> [log\_publishing\_application\_cloudwatch\_log\_group\_arn](#input\_log\_publishing\_application\_cloudwatch\_log\_group\_arn) | ARN of the CloudWatch log group to which log for ES\_APPLICATION\_LOGS needs to be published | `string` | `""` | no |
 | <a name="input_log_publishing_application_enabled"></a> [log\_publishing\_application\_enabled](#input\_log\_publishing\_application\_enabled) | Specifies whether log publishing option for ES\_APPLICATION\_LOGS is enabled or not | `string` | `"false"` | no |
 | <a name="input_log_publishing_index_cloudwatch_log_group_arn"></a> [log\_publishing\_index\_cloudwatch\_log\_group\_arn](#input\_log\_publishing\_index\_cloudwatch\_log\_group\_arn) | ARN of the CloudWatch log group to which log for INDEX\_SLOW\_LOGS needs to be published | `string` | `""` | no |
 | <a name="input_log_publishing_index_enabled"></a> [log\_publishing\_index\_enabled](#input\_log\_publishing\_index\_enabled) | Specifies whether log publishing option for INDEX\_SLOW\_LOGS is enabled or not | `string` | `"false"` | no |
 | <a name="input_log_publishing_search_cloudwatch_log_group_arn"></a> [log\_publishing\_search\_cloudwatch\_log\_group\_arn](#input\_log\_publishing\_search\_cloudwatch\_log\_group\_arn) | ARN of the CloudWatch log group to which log for SEARCH\_SLOW\_LOGS  needs to be published | `string` | `""` | no |
 | <a name="input_log_publishing_search_enabled"></a> [log\_publishing\_search\_enabled](#input\_log\_publishing\_search\_enabled) | Specifies whether log publishing option for SEARCH\_SLOW\_LOGS is enabled or not | `string` | `"false"` | no |
-| <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace from which the module is requested | `string` | n/a | yes |
+| <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace name | `string` | n/a | yes |
 | <a name="input_node_to_node_encryption_enabled"></a> [node\_to\_node\_encryption\_enabled](#input\_node\_to\_node\_encryption\_enabled) | Whether to enable node-to-node encryption | `bool` | `false` | no |
 | <a name="input_s3_manual_snapshot_repository"></a> [s3\_manual\_snapshot\_repository](#input\_s3\_manual\_snapshot\_repository) | ARN of S3 bucket to use for manual snapshot repository | `string` | `""` | no |
 | <a name="input_snapshot_enabled"></a> [snapshot\_enabled](#input\_snapshot\_enabled) | Set to false to prevent the module from creating snapshot resources | `string` | `"true"` | no |
-| <a name="input_team_name"></a> [team\_name](#input\_team\_name) | The name of your development team | `string` | n/a | yes |
+| <a name="input_team_name"></a> [team\_name](#input\_team\_name) | Team name | `string` | n/a | yes |
 | <a name="input_timestamp_field"></a> [timestamp\_field](#input\_timestamp\_field) | Field Kibana identifies as Time field, when creating the index pattern | `string` | `"last_updated"` | no |
 | <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | The name of the vpc (eg.: live-1) | `string` | n/a | yes |
 | <a name="input_warm_count"></a> [warm\_count](#input\_warm\_count) | Number of warm data nodes in the cluster | `number` | `2` | no |

@@ -1,3 +1,6 @@
+#################
+# Configuration #
+#################
 variable "eks_cluster_name" {
   description = "The name of the eks cluster to retrieve the OIDC information"
   type        = string
@@ -8,43 +11,8 @@ variable "vpc_name" {
   type        = string
 }
 
-variable "team_name" {
-  description = "The name of your development team"
-  type        = string
-}
-
-variable "environment-name" {
-  description = "The type of environment you're deploying to."
-  type        = string
-}
-
-variable "application" {
-  description = "The name of the application which uses this module."
-  type        = string
-}
-
 variable "elasticsearch-domain" {
   description = "The name of the domain you want to use. The actual domain name will use the format <team_name>-<environment-name>-<elasticsearch-domain>"
-  type        = string
-}
-
-variable "is-production" {
-  description = "Whether the ElasticSearch cluster is for production use."
-  type        = string
-}
-
-variable "business-unit" {
-  description = "Area of the MOJ responsible for the service"
-  type        = string
-}
-
-variable "infrastructure-support" {
-  description = "The team responsible for managing the infrastructure. Should be of the form <team-name> (<team-email>)"
-  type        = string
-}
-
-variable "namespace" {
-  description = "Namespace from which the module is requested"
   type        = string
 }
 
@@ -262,4 +230,42 @@ variable "domain_endpoint_enforce_https" {
   type        = bool
   default     = false
   description = "Enforce HTTPS when connecting to the cluster's domain endpoint"
+}
+
+########
+# Tags #
+########
+variable "business_unit" {
+  description = "Area of the MOJ responsible for the service"
+  type        = string
+}
+
+variable "application" {
+  description = "Application name"
+  type        = string
+}
+
+variable "is_production" {
+  description = "Whether this is used for production or not"
+  type        = string
+}
+
+variable "team_name" {
+  description = "Team name"
+  type        = string
+}
+
+variable "namespace" {
+  description = "Namespace name"
+  type        = string
+}
+
+variable "environment_name" {
+  description = "Environment name"
+  type        = string
+}
+
+variable "infrastructure_support" {
+  description = "The team responsible for managing the infrastructure. Should be of the form <team-name> (<team-email>)"
+  type        = string
 }
