@@ -232,6 +232,19 @@ variable "domain_endpoint_enforce_https" {
   description = "Enforce HTTPS when connecting to the cluster's domain endpoint"
 }
 
+variable "auto_tune_config" {
+  type = object({
+    desired_state                  = string
+    start_at                       = string
+    duration_value                 = number
+    duration_unit                  = string
+    cron_expression_for_recurrence = string
+    rollback_on_disable            = string
+  })
+  default     = null
+  description = "see https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticsearch_domain#auto_tune_options for object structure"
+}
+
 ########
 # Tags #
 ########

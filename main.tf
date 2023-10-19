@@ -245,6 +245,25 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
     cloudwatch_log_group_arn = var.log_publishing_application_cloudwatch_log_group_arn
   }
 
+  dynamic "auto_tune_options" {
+    for_each = var.auto_tune_config != null ? [1] : []
+    content {
+      desired_state       = strcontains(var.cluster_config.value["instance_type"], "t3.") ? "DISABLED" : auto_tune_config.value["desired_state"]
+      rollback_on_disable = auto_tune_config.value["rollback_on_disable"]
+      dynamic "maintenance_schedule" {
+        for_each = var.auto_tune_config != null ? [1] : []
+        content {
+          start_at = auto_tune_config.value["start_at"]
+          duration {
+            value = auto_tune_config.value["duration_value"]
+            unit  = auto_tune_config.value["duration_unit"]
+          }
+          cron_expression_for_recurrence = auto_tune_config.value["cron_expression_for_recurrence"]
+        }
+      }
+    }
+  }
+
   tags = local.default_tags
 }
 
