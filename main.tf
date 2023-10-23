@@ -248,17 +248,17 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
   dynamic "auto_tune_options" {
     for_each = var.auto_tune_config != null ? [1] : []
     content {
-      desired_state       = strcontains(var.cluster_config.value["instance_type"], "t3.") ? "DISABLED" : auto_tune_config.value["desired_state"]
-      rollback_on_disable = auto_tune_config.value["rollback_on_disable"]
+      desired_state       = length(split(var.instance_type, "t3.")) > 1 ? "DISABLED" : var.auto_tune_config["desired_state"]
+      rollback_on_disable = var.auto_tune_config["rollback_on_disable"]
       dynamic "maintenance_schedule" {
         for_each = var.auto_tune_config != null ? [1] : []
         content {
-          start_at = auto_tune_config.value["start_at"]
+          start_at = var.auto_tune_config["start_at"]
           duration {
-            value = auto_tune_config.value["duration_value"]
-            unit  = auto_tune_config.value["duration_unit"]
+            value = var.auto_tune_config["duration_value"]
+            unit  = var.auto_tune_config["duration_unit"]
           }
-          cron_expression_for_recurrence = auto_tune_config.value["cron_expression_for_recurrence"]
+          cron_expression_for_recurrence = var.auto_tune_config["cron_expression_for_recurrence"]
         }
       }
     }
