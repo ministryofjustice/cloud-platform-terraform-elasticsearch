@@ -1,4 +1,7 @@
 # cloud-platform-terraform-elasticsearch
+
+>This module only supports ElasticSearch (not [OpenSearch](https://opensearch.org/)) and is no longer maintained. You should migrate your data and use [cloud-platform-terraform-opensearch](https://github.com/ministryofjustice/cloud-platform-terraform-opensearch) instead.
+
 Terraform module to add a AWS Elasticsearch and Kibana resource in the Cloud Platform
 
 [![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-terraform-elasticsearch/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-terraform-elasticsearch/releases)
